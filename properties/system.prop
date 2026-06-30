@@ -9,6 +9,9 @@ ro.product.mod_device=onyx_global
 debug.hwui.skia_atrace_enabled=false
 ro.hwui.use_vulkan=true
 
+# RenderEngine (SurfaceFlinger compositor) - Vulkan backend
+debug.renderengine.backend=skiavkthreaded
+
 # Media
 media.stagefright.thumbnail.prefer_hw_codecs=true
 ro.media.recorder-max-base-layer-fps=60
