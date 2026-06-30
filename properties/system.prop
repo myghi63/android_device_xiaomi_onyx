@@ -7,6 +7,7 @@ ro.product.mod_device=onyx_global
 
 # HWUI
 debug.hwui.skia_atrace_enabled=false
+ro.hwui.use_vulkan=true
 
 # Media
 media.stagefright.thumbnail.prefer_hw_codecs=true
