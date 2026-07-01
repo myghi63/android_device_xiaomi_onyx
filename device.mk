@@ -79,10 +79,22 @@ PRODUCT_PACKAGES += \
     libmediautils_vendor.vendor \
     libmemunreachable.vendor
 
+# JamesDSP (AIDL-native audio effect). App + libjamesdspaidl prebuilt come from
+# vendor/JamesDSP; effect registration lives in the sku_tuna audio_effects_config
+# below (jdsp library + jamesdsp effect with type=). We do NOT inherit
+# vendor/JamesDSP/config.mk because it copies its generic audio_effects_config.xml
+# to /vendor/etc/, which onyx's QTI factory ignores (it reads sku_tuna).
+PRODUCT_SOONG_NAMESPACES += \
+    vendor/JamesDSP
+
+PRODUCT_PACKAGES += \
+    JamesDSP \
+    libjamesdspaidl
+
 AUDIO_HAL_DIR := hardware/qcom-caf/sm8750/audio/primary-hal
 
 PRODUCT_COPY_FILES += \
-    $(AUDIO_HAL_DIR)/configs/sun/audio_effects_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_tuna/audio_effects_config.xml \
+    $(LOCAL_PATH)/configs/audio/audio_effects_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_tuna/audio_effects_config.xml \
     $(LOCAL_PATH)/configs/audio/audio_module_config_primary.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/audio_module_config_primary.xml \
     $(LOCAL_PATH)/configs/audio/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_tuna/audio_policy_configuration.xml
 
