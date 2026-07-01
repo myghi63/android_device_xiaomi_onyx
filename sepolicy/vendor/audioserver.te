@@ -1,0 +1,4 @@
+# JamesDSP: audioserver looks up services via service_manager.
+# (vendor/JamesDSP ships this rule but with a syntax error — missing the
+# type:class colon — so it is provided here in the device tree instead.)
+allow audioserver default_android_service:service_manager find;
