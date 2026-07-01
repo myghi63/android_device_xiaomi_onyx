@@ -87,6 +87,10 @@ PRODUCT_PACKAGES += \
 # audio_effects_config below instead (jdsp library + jamesdsp effect with type=).
 $(call inherit-product, vendor/JamesDSP/common.mk)
 
+# microG (GmsCore, Phonesky, GsfProxy). Soft inherit: if vendor/microG is not
+# synced, the build silently skips it instead of failing.
+$(call inherit-product-if-exists, vendor/microG/common.mk)
+
 AUDIO_HAL_DIR := hardware/qcom-caf/sm8750/audio/primary-hal
 
 PRODUCT_COPY_FILES += \
