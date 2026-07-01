@@ -27,8 +27,11 @@ AB_OTA_PARTITIONS := \
     vendor_dlkm
 
 # Architecture
+# sm8735 cores (Cortex-A720/A725/X4) are ARMv9.2-A. armv9-2a maps to
+# -march=armv9.2-a (SVE2 enabled); the prebuilt GKI kernel is built with
+# CONFIG_ARM64_SVE/SVE2 so SVE2 userspace codegen does not SIGILL.
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-a-branchprot
+TARGET_ARCH_VARIANT := armv9-2a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := generic
 TARGET_CPU_VARIANT_RUNTIME := oryon
