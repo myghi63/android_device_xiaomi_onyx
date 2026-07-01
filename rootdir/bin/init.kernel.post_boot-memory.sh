@@ -160,7 +160,9 @@ function configure_min_free_kbytes()
 		WatermarkScale=43
 		echo $WatermarkScale > /proc/sys/vm/watermark_scale_factor
 	elif [[ "$ProductName" == *onyx* || "$ProductName" == *luming* ]]; then
-		WatermarkScale=43
+		# onyx has 12GB RAM: keep more free headroom so kswapd reclaims
+		# earlier and direct-reclaim stalls are rarer during bursts.
+		WatermarkScale=100
 		echo $WatermarkScale > /proc/sys/vm/watermark_scale_factor
 	fi
 
@@ -194,6 +196,26 @@ function configure_memory_parameters() {
 	# Disable periodic kcompactd wakeups. We do not use THP, so having many
 	# huge pages is not as necessary.
 	echo 0 > /proc/sys/vm/compaction_proactiveness
+
+	# onyx VM tuning (12GB, zram-backed swap):
+	#  - page-cluster=0: read a single page per swap-in fault. zram is
+	#    random-access RAM, so the disk-era 8-page readahead only wastes
+	#    decompression on pages we may not need.
+	#  - vfs_cache_pressure=80: retain dentry/inode caches a bit longer for
+	#    snappier file/app access (we have RAM to spare).
+	#  - extfrag_threshold=730: lean towards reclaim over compaction for
+	#    high-order allocations (mostly inert with THP disabled).
+	#  - watermark_boost_factor=0: keep temporary watermark boosting off so a
+	#    fragmentation event does not trigger extra reclaim bursts (explicit
+	#    in case a kernel ships a non-zero default here).
+	echo 0 > /proc/sys/vm/page-cluster
+	echo 80 > /proc/sys/vm/vfs_cache_pressure
+	if [ -f /proc/sys/vm/extfrag_threshold ]; then
+		echo 730 > /proc/sys/vm/extfrag_threshold
+	fi
+	if [ -f /proc/sys/vm/watermark_boost_factor ]; then
+		echo 0 > /proc/sys/vm/watermark_boost_factor
+	fi
 
 	#Set per-app max kgsl reclaim limit and per shrinker call limit
 	if [ -f /sys/class/kgsl/kgsl/page_reclaim_per_call ]; then
