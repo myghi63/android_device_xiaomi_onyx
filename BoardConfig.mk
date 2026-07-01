@@ -27,11 +27,13 @@ AB_OTA_PARTITIONS := \
     vendor_dlkm
 
 # Architecture
-# sm8735 cores (Cortex-A720/A725/X4) are ARMv9.2-A. armv9-2a maps to
-# -march=armv9.2-a (SVE2 enabled); the prebuilt GKI kernel is built with
-# CONFIG_ARM64_SVE/SVE2 so SVE2 userspace codegen does not SIGILL.
+# sm8735 cores (Cortex-A720/A725/X4) are ARMv9.2-A, but armv9-2a
+# (-march=armv9.2-a, SVE2 enabled) no-boots on this prebuilt GKI kernel:
+# SVE2 userspace codegen SIGILLs early-userspace (kernel/vendor blobs lack
+# working SVE2 context handling). Fall back to armv9-a, which soong maps to
+# -march=armv9-a+crypto+nosve+dotprod+fp16+i8mm (SVE2 OFF, keeps dotprod/fp16/i8mm).
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv9-2a
+TARGET_ARCH_VARIANT := armv9-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := generic
 # oryon is the SD 8 Elite custom core and appears in NONE of ART's arm64
