@@ -34,7 +34,12 @@ TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv9-2a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := generic
-TARGET_CPU_VARIANT_RUNTIME := oryon
+# oryon is the SD 8 Elite custom core and appears in NONE of ART's arm64
+# feature arrays (declares no crc/lse/fp16/dotprod). cortex-a76 is the closest
+# ART-recognised match for sm8735's big cores (Cortex-A720/A725/X4 descend from
+# the A76/A77/A78 line): it sets crc+lse+fp16+dotprod and carries no spurious
+# cortex-a53 erratum workaround.
+TARGET_CPU_VARIANT_RUNTIME := cortex-a76
 
 # Audio
 AUDIO_FEATURE_ENABLED_DLKM := true
