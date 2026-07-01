@@ -79,17 +79,13 @@ PRODUCT_PACKAGES += \
     libmediautils_vendor.vendor \
     libmemunreachable.vendor
 
-# JamesDSP (AIDL-native audio effect). App + libjamesdspaidl prebuilt come from
-# vendor/JamesDSP; effect registration lives in the sku_tuna audio_effects_config
-# below (jdsp library + jamesdsp effect with type=). We do NOT inherit
-# vendor/JamesDSP/config.mk because it copies its generic audio_effects_config.xml
-# to /vendor/etc/, which onyx's QTI factory ignores (it reads sku_tuna).
-PRODUCT_SOONG_NAMESPACES += \
-    vendor/JamesDSP
-
-PRODUCT_PACKAGES += \
-    JamesDSP \
-    libjamesdspaidl
+# JamesDSP (AIDL-native audio effect). common.mk provides the app,
+# libjamesdspaidl, and the Enhanced processing DUMP privapp allowlist. We
+# inherit common.mk instead of config.mk because config.mk copies a generic
+# audio_effects_config.xml to /vendor/etc/, which onyx's QTI factory ignores
+# (it reads the sku_tuna config); the effect is registered in the sku_tuna
+# audio_effects_config below instead (jdsp library + jamesdsp effect with type=).
+$(call inherit-product, vendor/JamesDSP/common.mk)
 
 AUDIO_HAL_DIR := hardware/qcom-caf/sm8750/audio/primary-hal
 
