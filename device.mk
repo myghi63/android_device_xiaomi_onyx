@@ -91,6 +91,10 @@ $(call inherit-product, vendor/JamesDSP/common.mk)
 # synced, the build silently skips it instead of failing.
 $(call inherit-product-if-exists, vendor/microG/common.mk)
 
+# ROM tweaks (product scope). Soft inherit: skipped if vendor/tweaks is absent.
+# Board-scoped tweaks are pulled in from BoardConfig.mk separately.
+$(call inherit-product-if-exists, vendor/tweaks/tweaks.mk)
+
 AUDIO_HAL_DIR := hardware/qcom-caf/sm8750/audio/primary-hal
 
 PRODUCT_COPY_FILES += \

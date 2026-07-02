@@ -240,5 +240,9 @@ WIFI_FEATURE_HOSTAPD_11AX := true
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 
+# ROM tweaks (board scope). Soft include: skipped if vendor/tweaks is absent.
+# Product-scoped tweaks are pulled in from device.mk separately.
+-include vendor/tweaks/BoardConfig.mk
+
 # Vendor
 include vendor/xiaomi/onyx/BoardConfigVendor.mk
