@@ -21,6 +21,7 @@ allow hal_camera_client hal_quickcamera_service:service_manager find;
 allow hal_camera_default camlog_device:chr_file { ioctl open read write };
 allow hal_camera_default proc_pressure_mem:file { getattr open read write };
 allow hal_camera_default proc_pressure_io:file r_file_perms;
+allow hal_camera_default proc_pressure_cpu:file r_file_perms;
 allow hal_camera_default self:capability { fowner ipc_lock };
 allow hal_camera_default sys_thermal_flash_state:file { w_file_perms getattr };
 allow hal_camera_default sys_thermal_torch_real_level:file { w_file_perms getattr };
