@@ -275,6 +275,9 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/etc/clstc_config_library.xml': blob_fixup()
         .regex_replace(r'<library>\s*<name>libdolbyclstc[\s\S]*?</library>', ''),
 
+    'vendor/etc/seccomp_policy/qesdksec.policy': blob_fixup()
+        .add_line_if_missing('lseek: 1'),
+
     'vendor/etc/sensors/hals.conf': blob_fixup()
         .regex_replace('.*vl53l8.*\n?', ''),
 
