@@ -1,4 +1,4 @@
-# All unpinned blobs below are extracted from onyx OS3.0.7.0.WOLMIXM
+# All unpinned blobs below are extracted from onyx OS3.0.303.0.WOLMIXM
 
 # ACDB
 odm/etc/acdbdata/Fluence/Fluence_acdb_cal.acdb
@@ -1689,6 +1689,7 @@ vendor/lib64/libchinodehmeutils.so
 vendor/lib64/libcom.qti.chinodeutils.so
 vendor/lib64/libcom.xiaomi.attribute.so
 vendor/lib64/libcom.xiaomi.debug.so
+vendor/lib64/libcom.xiaomi.ionutils.so
 vendor/lib64/libcom.xiaomi.ecoenginemonitor.so
 vendor/lib64/libcom.xiaomi.eventcallback.so
 vendor/lib64/libcom.xiaomi.grallocutils.so
@@ -2576,31 +2577,32 @@ vendor/bin/hw/android.hardware.gatekeeper-service-qti
 vendor/etc/init/android.hardware.gatekeeper-service-qti.rc
 vendor/lib64/hw/libqtigatekeeper.so
 
-# Graphics
+# Graphics - Adreno V842.33.1 pinned
 vendor/app/com.qualcomm.qti.gpudrivers.sun.api35/com.qualcomm.qti.gpudrivers.sun.api35.apk
-vendor/lib64/egl/eglSubDriverAndroid.so
-vendor/lib64/egl/libEGL_adreno.so;SYMLINK=vendor/lib64/libEGL_adreno.so
-vendor/lib64/egl/libGLESv1_CM_adreno.so
-vendor/lib64/egl/libGLESv2_adreno.so;SYMLINK=vendor/lib64/libGLESv2_adreno.so
-vendor/lib64/egl/libVkLayer_ADRENO_qprofiler.so
-vendor/lib64/egl/libq3dtools_adreno.so;SYMLINK=vendor/lib64/libq3dtools_adreno.so
-vendor/lib64/egl/libq3dtools_esx.so
-vendor/lib64/hw/vulkan.adreno.so
-vendor/lib64/libCB.so
-vendor/lib64/libOpenCL.so
-vendor/lib64/libOpenCL_adreno.so
-vendor/lib64/libadreno_app_profiles.so
-vendor/lib64/libadreno_compiler_cl.so
-vendor/lib64/libadreno_utils.so
-vendor/lib64/libgsl.so
+vendor/lib64/egl/eglSubDriverAndroid.so|d5d8ffc48c5d9365bf6213c071384d1928c40c4c
+vendor/lib64/egl/libEGL_adreno.so;SYMLINK=vendor/lib64/libEGL_adreno.so|6b018fbd72b258612f5b9bf662ab10a597989f99
+vendor/lib64/egl/libGLESv1_CM_adreno.so|0061bb38d086b94567605bfe44805b43c8a29bca
+vendor/lib64/egl/libGLESv2_adreno.so;SYMLINK=vendor/lib64/libGLESv2_adreno.so|015a7b7ecc26679aac1a56072a521c267d44a7f8
+vendor/lib64/egl/libVkLayer_ADRENO_qprofiler.so|f031b5253ea43a36612e1510e778052ed2af0dd6
+vendor/lib64/egl/libq3dtools_adreno.so;SYMLINK=vendor/lib64/libq3dtools_adreno.so|ef89c1b09f7c7fd61714e1d3b394008d0a59fffc
+vendor/lib64/egl/libq3dtools_esx.so|793c1fe048ea1bb62df6fc0886e9ed00e6f5b5d4
+vendor/lib64/hw/vulkan.adreno.so|17a586914b30748150aee58c87ad0e02af592f4d
+vendor/lib64/libCB.so|a26db41388b381cb928e09a55ba69370f2f1cd89
+vendor/lib64/libOpenCL.so|1b1ab80a4d20d166afc3d97396f2d50d497a375d
+vendor/lib64/libOpenCL_adreno.so|5f65a66b09331f33607a1d449c238df6217312bd
+vendor/lib64/libadreno_app_profiles.so|1b885b44596869fd2a2d5e616e42b0a16c3dc2c7
+vendor/lib64/libadreno_compiler_cl.so|c8b297f71cfd36b76ac0b8053cc671e66c5885dd
+vendor/lib64/libadreno_utils.so|ed8897136b5ce9a6875e9ba91c773f43173119f6
+vendor/lib64/libgsl.so|0b1247616e68741cff484c7d5a322f6f12a8d1f0
 vendor/lib64/libkcl.so
 vendor/lib64/libkernelmanager.so
-vendor/lib64/libllvm-glnext.so
-vendor/lib64/libllvm-qcom.so
-vendor/lib64/libllvm-qgl.so
+vendor/lib64/libllvm-glnext.so|6371f903485489d5a584715f665b1266527be3ab
+vendor/lib64/libllvm-qcom.so|ab12e29751805c23468a0109ff87dcaf67545954
+vendor/lib64/libllvm-qgl.so|3e76169ff1a5b07fdedd88b57dfd0abc58bfe21d
 vendor/lib64/libopencl_loader.so
+vendor/lib64/vendor.qti.hardware.hexlp-V2-ndk.so|01734ed8708a1d9d8ba8bb25e07f24672f48febc
 
-# Graphics firmware
+# Graphics firmware - kbc from Adreno V842.33.1 pinned
 odm/firmware/gen80000_zap.mbn
 vendor/firmware/gen70900_aqe.fw
 vendor/firmware/gen70900_sqe.fw
@@ -2613,10 +2615,10 @@ vendor/firmware/gen80000_gmu.bin
 vendor/firmware/gen80000_sqe.fw
 vendor/firmware/gen80600_gmu.bin
 vendor/firmware/gmu_gen70900.bin
-vendor/gpu/kbc/sequence_manifest.bin
-vendor/gpu/kbc/unified_kbcs_32.bin
-vendor/gpu/kbc/unified_kbcs_64.bin
-vendor/gpu/kbc/unified_ksqs.bin
+vendor/gpu/kbc/sequence_manifest.bin|14975edd52ee262a487c1f88c51fafd899bbf0d4
+vendor/gpu/kbc/unified_kbcs_32.bin|a506c14e1c85a0b7ea6b6001feadaebe6795e709
+vendor/gpu/kbc/unified_kbcs_64.bin|80698380b934f1ee65fb875a66f85b2d901f3fd2
+vendor/gpu/kbc/unified_ksqs.bin|467cc9f649e88c4e9979681b27f2ab0db2d1099e
 
 # Hexlp
 vendor/bin/hexlpservice
