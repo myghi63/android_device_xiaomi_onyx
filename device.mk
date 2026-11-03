@@ -15,6 +15,12 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_ven
 # Dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
+# Compile system_server with the speed filter, both at build time and
+# whenever it gets recompiled on the device.
+PRODUCT_SYSTEM_SERVER_COMPILER_FILTER := speed
+PRODUCT_PRODUCT_PROPERTIES += \
+    dalvik.vm.systemservercompilerfilter=speed
+
 # pKVM
 $(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk)
 
