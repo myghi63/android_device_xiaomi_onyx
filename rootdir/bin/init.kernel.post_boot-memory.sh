@@ -103,9 +103,9 @@ function configure_read_ahead_kb_values() {
 
 function configure_thp()
 {
-	## Goal is to allow all allocations to use THP whilst minimizing allocaiton delays
-	# Allow all eligibe page faults to use THP
-	echo always > /sys/kernel/mm/transparent_hugepage/enabled
+	## Goal is to allow explicit THP users whilst minimizing allocation delays
+	# Only madvise(MADV_HUGEPAGE) regions use THP
+	echo madvise > /sys/kernel/mm/transparent_hugepage/enabled
 	# Prevent page faults on THP-elgible VMAs from causing reclaim or compaction
 	echo never > /sys/kernel/mm/transparent_hugepage/defrag
 
