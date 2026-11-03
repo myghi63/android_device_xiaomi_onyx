@@ -63,6 +63,8 @@
 import /vendor/etc/init/hw/init.qti.kernel.rc
 
 on early-init
+    # set tcp_mtu_probing to 1
+    write /proc/sys/net/ipv4/tcp_mtu_probing 1
     write /proc/sys/kernel/printk_devkmsg ratelimited
     export MEMTAG_OPTIONS off
 
