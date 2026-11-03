@@ -11778,6 +11778,12 @@ filtering rules are the same as those in carrier_config*.xml_utils files. This
     <carrier_config mcc="724" mnc="04">
         <boolean name="carrier_volte_available_bool" value="true" />
     </carrier_config>
+    <carrier_config mcc="724" mnc="17">
+        <boolean name="carrier_volte_available_bool" value="true" />
+        <boolean name="carrier_wfc_ims_available_bool" value="true" />
+        <boolean name="editable_wfc_mode_bool" value="true" />
+        <int name="carrier_default_wfc_ims_mode_int" value="1" />
+    </carrier_config>
     <carrier_config mcc="724" mnc="54">
         <boolean name="carrier_volte_available_bool" value="true" />
     </carrier_config>
