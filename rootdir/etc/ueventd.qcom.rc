@@ -621,3 +621,6 @@ subsystem mem_buf_vm
 
 # IPA Events
 /dev/ipa_events         0660   radio      radio
+
+# NTSync
+/dev/ntsync             0666   root       root
