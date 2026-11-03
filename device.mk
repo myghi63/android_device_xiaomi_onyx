@@ -79,14 +79,6 @@ PRODUCT_PACKAGES += \
     libmemunreachable.vendor \
     qti-audio-types-aidl-V1-ndk.vendor
 
-# JamesDSP (AIDL-native audio effect). common.mk provides the app,
-# libjamesdspaidl, and the Enhanced processing DUMP privapp allowlist. We
-# inherit common.mk instead of config.mk because config.mk copies a generic
-# audio_effects_config.xml to /vendor/etc/, which onyx's QTI factory ignores
-# (it reads the sku_tuna config); the effect is registered in the sku_tuna
-# audio_effects_config below instead (jdsp library + jamesdsp effect with type=).
-$(call inherit-product, vendor/JamesDSP/common.mk)
-
 # microG (GmsCore, Phonesky, GsfProxy). Soft inherit: if vendor/microG is not
 # synced, the build silently skips it instead of failing.
 $(call inherit-product-if-exists, vendor/microG/common.mk)
@@ -159,6 +151,10 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.aiqe-V2-ndk.vendor  \
     vendor.qti.hardware.display.config-V12-ndk.vendor  \
     vendor.qti.hardware.display.composer3-V1-ndk.vendor 
+
+# Dolby
+PRODUCT_PACKAGES += \
+    LunarisDolby
 
 # DRM
 PRODUCT_PACKAGES += \

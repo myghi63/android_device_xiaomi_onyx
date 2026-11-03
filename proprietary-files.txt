@@ -163,8 +163,10 @@ vendor/lib64/libmisight.so
 
 # Audio soundfx
 vendor/lib64/soundfx/libbundleaidl.so;DISABLE_DEPS
+vendor/lib64/soundfx/libdlbvolaidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libdownmixaidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libdynamicsprocessingaidl.so;DISABLE_DEPS
+vendor/lib64/soundfx/libhwdapaidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libloudnessenhanceraidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libqcompostprocbundle.so;DISABLE_DEPS
 vendor/lib64/soundfx/libqcomvisualizer.so;DISABLE_DEPS
@@ -2146,6 +2148,22 @@ vendor/lib64/vendor.libdpmframework.so
 vendor/lib64/vendor.libdpmtcm.so
 vendor/lib64/vendor.libmwqemiptablemgr.so
 vendor/lib64/vendor.qti.hardware.dpmaidlservice-V1-ndk.so
+
+# Dolby
+odm/etc/dolby/dax-default-spatializer.xml
+odm/etc/dolby/dax-default.xml
+vendor/bin/hw/vendor.dolby.dms.service
+vendor/etc/dolby/dax-default-spatializer.xml
+vendor/etc/dolby/dax-default.xml
+vendor/etc/init/dms-service.rc
+vendor/etc/vintf/manifest/dms-service.xml
+vendor/lib64/libdapparamstorage.so
+vendor/lib64/libdlbdsservice.so
+vendor/lib64/libdlbpreg.so
+vendor/lib64/libdmshal.so
+vendor/lib64/libspatializerparamstorage.so
+vendor/lib64/vendor.dolby.dms-V1-ndk.so
+vendor/lib64/vendor.dolby.hardware.dms@2.0.so
 
 # DRM
 vendor/bin/hw/vendor.qti.hardware.qseecom@1.0-service

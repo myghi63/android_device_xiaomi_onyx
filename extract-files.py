@@ -425,7 +425,16 @@ blob_fixups: blob_fixups_user_type = {
             'android.media.audio.common.types-V3-ndk.so'
     ),
 
-    'vendor/lib64/soundfx/libbundleaidl.so': blob_fixup()
+    'vendor/lib64/soundfx/libdlbvolaidl.so': blob_fixup()
+        .replace_needed(
+            'libaudio_aidl_conversion_common_ndk.so',
+            'libaudio_aidl_conversion_common_ndk_prebuilt.so'
+    ),
+
+    (
+        'vendor/lib64/soundfx/libbundleaidl.so',
+        'vendor/lib64/soundfx/libhwdapaidl.so',
+    ): blob_fixup()
         .replace_needed(
             'android.media.audio.common.types-V6-ndk.so',
             'android.media.audio.common.types-V3-ndk.so'
