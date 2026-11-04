@@ -1,0 +1,3 @@
+get_prop(vendor_qms_0, vendor_qms_prop)
+get_prop(vendor_qms_1, vendor_qms_prop)
+get_prop(vendor_qms_2, vendor_qms_prop)
