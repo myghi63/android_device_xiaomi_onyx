@@ -34,8 +34,6 @@ function configure_zram_parameters() {
 	MemTotalStr=`cat /proc/meminfo | grep MemTotal`
 	MemTotal=${MemTotalStr:16:8}
 
-	low_ram=`getprop ro.config.low_ram`
-
 
 	let RamSizeGB="( $MemTotal / 1048576 ) + 1"
 	diskSizeUnit=M
@@ -47,10 +45,7 @@ function configure_zram_parameters() {
 		let zRamSizeMB=6144
 	fi
 
-	# And enable lz4 zram compression for Go targets.
-	if [ "$low_ram" == "true" ]; then
-		echo lz4 > /sys/block/zram0/comp_algorithm
-	fi
+	echo lz4 > /sys/block/zram0/comp_algorithm
 
 	if [ -f /sys/block/zram0/disksize ]; then
 		if [ -f /sys/block/zram0/use_dedup ]; then
