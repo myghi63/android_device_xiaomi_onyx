@@ -1,2 +1,3 @@
 r_dir_file(kernel, vendor_file)
 allow kernel block_device:dir { getattr search };
+allow kernel self:capability net_bind_service;
