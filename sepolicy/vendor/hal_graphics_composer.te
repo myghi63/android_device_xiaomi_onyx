@@ -17,3 +17,4 @@ add_service(hal_graphics_composer_default, vendor_mistcdisplay_service)
 allow hal_graphics_composer_default vendor_sysfs_displayfeature:dir { open read search };
 allow hal_graphics_composer_default vendor_sysfs_displayfeature:file { open read write };
 add_service(hal_graphics_composer_server, vendor_hal_hwcextension_xiaomi_service)
+hal_client_domain(hal_graphics_composer_default, dvs_aidl)

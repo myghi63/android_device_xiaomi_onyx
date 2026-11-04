@@ -14,6 +14,13 @@
         </interface>
     </hal>
     <hal format="aidl" optional="true">
+        <name>vendor.dolby.dvs</name>
+        <interface>
+            <name>IDvs</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
         <name>vendor.xiaomi.hardware.aidlbgservice</name>
         <interface>
             <name>IBGService</name>

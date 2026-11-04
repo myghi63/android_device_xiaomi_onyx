@@ -2150,8 +2150,14 @@ vendor/lib64/vendor.libmwqemiptablemgr.so
 vendor/lib64/vendor.qti.hardware.dpmaidlservice-V1-ndk.so
 
 # Dolby
+odm/bin/hw/dvs-aidl-service
 odm/etc/dolby/dax-default-spatializer.xml
 odm/etc/dolby/dax-default.xml
+odm/etc/init/dvs-aidl-service.rc
+odm/etc/surfaceflinger/dolby_vision.cfg
+odm/etc/vintf/manifest/dvs-aidl-service.xml
+odm/vendor/etc/dolby_vision.cfg
+odm/vendor/persist/display/dolby_vision.cfg
 vendor/bin/hw/vendor.dolby.dms.service
 vendor/bin/hw/vendor.dolby.media.c2-default-service-dax
 vendor/etc/dolby/dax-default-spatializer.xml
@@ -2169,6 +2175,12 @@ vendor/lib64/libdapparamstorage.so
 vendor/lib64/libdlbdsservice.so
 vendor/lib64/libdlbpreg.so
 vendor/lib64/libdmshal.so
+vendor/lib64/libdolbyclstc.so
+vendor/lib64/libdolbydecoderprocessor.so
+vendor/lib64/libdolbyeglcore.so
+vendor/lib64/libdolbyottcameracontrol.so
+vendor/lib64/libdolbyproxyandroid.so
+vendor/lib64/libqcodec2_dolbydecoderfilter.so
 vendor/lib64/libspatializerparamstorage.so
 vendor/lib64/vendor.dolby.dms-V1-ndk.so
 vendor/lib64/vendor.dolby.hardware.dms@2.0.so
