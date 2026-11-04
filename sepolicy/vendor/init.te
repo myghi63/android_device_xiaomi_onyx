@@ -7,3 +7,4 @@ set_prop(vendor_init, vendor_radio_prop)
 set_prop(vendor_init, vendor_ssr_prop)
 set_prop(vendor_init, vendor_thermal_normal_prop)
 set_prop(vendor_init, vendor_touchfeature_prop)
+allow vendor_init sysfs:lnk_file setattr;
