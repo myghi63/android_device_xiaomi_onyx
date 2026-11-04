@@ -167,6 +167,7 @@ vendor/lib64/soundfx/libdlbvolaidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libdownmixaidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libdynamicsprocessingaidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libhwdapaidl.so;DISABLE_DEPS
+vendor/lib64/soundfx/libswspatializeraidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libloudnessenhanceraidl.so;DISABLE_DEPS
 vendor/lib64/soundfx/libqcompostprocbundle.so;DISABLE_DEPS
 vendor/lib64/soundfx/libqcomvisualizer.so;DISABLE_DEPS
@@ -2182,6 +2183,7 @@ vendor/lib64/libdolbyottcameracontrol.so
 vendor/lib64/libdolbyproxyandroid.so
 vendor/lib64/libqcodec2_dolbydecoderfilter.so
 vendor/lib64/libspatializerparamstorage.so
+vendor/lib64/libswspatializeraidl_ext.so;DISABLE_DEPS
 vendor/lib64/vendor.dolby.dms-V1-ndk.so
 vendor/lib64/vendor.dolby.hardware.dms@2.0.so
 

@@ -126,3 +126,9 @@ ro.vendor.touch.touchscheduler.enable=true
 
 # SKU
 import /odm/etc/odm_${ro.boot.hwc}.prop
+
+# Spatializer
+audio.spatializer.pose_predictor_type=2
+audio.spatializer.prediction_duration_ms=50
+persist.vendor.audio.spatializer.enable=false
+ro.vendor.audio.spatializer.support.speaker=true

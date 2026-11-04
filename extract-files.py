@@ -432,6 +432,15 @@ blob_fixups: blob_fixups_user_type = {
     ),
 
     (
+        'vendor/lib64/libswspatializeraidl_ext.so',
+        'vendor/lib64/soundfx/libswspatializeraidl.so',
+    ): blob_fixup()
+        .replace_needed(
+            'libaudio_aidl_conversion_common_ndk.so',
+            'libaudio_aidl_conversion_common_ndk_prebuilt.so'
+        ),
+
+    (
         'vendor/lib64/soundfx/libbundleaidl.so',
         'vendor/lib64/soundfx/libhwdapaidl.so',
     ): blob_fixup()
