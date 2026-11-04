@@ -35,3 +35,4 @@ vendor.xiaomi.hardware.mlipay.IMlipayService/default        u:object_r:hal_mlipa
 
 # Touchfeature
 vendor.xiaomi.hw.touchfeature.ITouchFeature/default          u:object_r:hal_touchfeature_xiaomi_service:s0
+android.hardware.media.c2.IComponentStore/default9                    u:object_r:hal_codec2_service:s0
