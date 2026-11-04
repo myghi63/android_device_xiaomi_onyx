@@ -1,6 +1,9 @@
 # Charge
 type vendor_charge_block_device, dev_type;
 
+# Rescue
+type rescue_block_device, dev_type;
+
 # Displayfeature
 type vendor_displayfeature_device, dev_type;
 type vendor_displaylog_device, dev_type;
