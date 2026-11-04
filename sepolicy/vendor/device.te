@@ -13,3 +13,6 @@ type vendor_fingerprint_device, dev_type;
 
 # Touchfeature
 type touchfeature_device, dev_type;
+
+# Miev
+type vendor_miev_device, dev_type;
