@@ -31,6 +31,13 @@
             <Limit name="measured-frame-rate-1280x720" range="470-626" />
             <Limit name="measured-frame-rate-1920x1088" range="199-309" />
         </MediaCodec>
+        <MediaCodec name="c2.qti.dv.decoder" type="video/dolby-vision" update="true">
+            <Limit name="measured-frame-rate-352x288" range="625-1900" />
+            <Limit name="measured-frame-rate-720x480" range="370-1550" />
+            <Limit name="measured-frame-rate-1280x720" range="270-2600" />
+            <Limit name="measured-frame-rate-1920x1080" range="260-1200" />
+            <Limit name="measured-frame-rate-3840x2160" range="67-505" />
+        </MediaCodec>
         <MediaCodec name="c2.qti.avc.decoder.low_latency" type="video/avc" update="true">
             <Limit name="measured-frame-rate-320x240" range="104-329" />
             <Limit name="measured-frame-rate-720x480" range="216-593" />
