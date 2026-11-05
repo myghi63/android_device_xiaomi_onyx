@@ -347,6 +347,7 @@
             "Name": "sysDevicesSystemCpuCpu2CoreCtlEnable",
             "Path": "/sys/devices/system/cpu/cpu2/core_ctl/enable",
             "Values": [
+                "1",
                 "0"
             ],
             "DefaultIndex": 0,
@@ -424,6 +425,12 @@
         {
             "PowerHint": "INTERACTION",
             "Node": "sysDevicesSystemCpuCpu5CoreCtlEnable",
+            "Value": "0",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpu2CoreCtlEnable",
             "Value": "0",
             "Duration": 0
         },

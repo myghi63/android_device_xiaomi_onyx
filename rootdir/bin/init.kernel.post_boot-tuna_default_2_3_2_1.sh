@@ -28,12 +28,12 @@ if [ -d /proc/sys/walt ]; then
 	echo 0x00 > /sys/devices/system/cpu/cpu0/core_ctl/assist_cpu_misfit_mask
 
 	# Core control parameters for gold
-	echo 3 > /sys/devices/system/cpu/cpu2/core_ctl/min_cpus
+	echo 1 > /sys/devices/system/cpu/cpu2/core_ctl/min_cpus
 	echo 60 > /sys/devices/system/cpu/cpu2/core_ctl/busy_up_thres
 	echo 30 > /sys/devices/system/cpu/cpu2/core_ctl/busy_down_thres
 	echo 100 > /sys/devices/system/cpu/cpu2/core_ctl/offline_delay_ms
 	echo 3 > /sys/devices/system/cpu/cpu2/core_ctl/task_thres
-	echo 0 0 0 > /sys/devices/system/cpu/cpu2/core_ctl/not_preferred
+	echo 0 1 1 > /sys/devices/system/cpu/cpu2/core_ctl/not_preferred
 	echo 0xFC > /sys/devices/system/cpu/cpu2/core_ctl/nrrun_cpu_mask
 	echo 0x63 > /sys/devices/system/cpu/cpu2/core_ctl/nrrun_cpu_misfit_mask
 	echo 0x00 > /sys/devices/system/cpu/cpu2/core_ctl/assist_cpu_mask
@@ -65,7 +65,7 @@ if [ -d /proc/sys/walt ]; then
 	echo 0x03 > /sys/devices/system/cpu/cpu7/core_ctl/assist_cpu_misfit_mask
 
 	echo 0 > /sys/devices/system/cpu/cpu0/core_ctl/enable
-	echo 0 > /sys/devices/system/cpu/cpu2/core_ctl/enable
+	echo 1 > /sys/devices/system/cpu/cpu2/core_ctl/enable
 	echo 1 > /sys/devices/system/cpu/cpu5/core_ctl/enable
 	echo 1 > /sys/devices/system/cpu/cpu7/core_ctl/enable
 
