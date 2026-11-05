@@ -27,9 +27,9 @@ AB_OTA_PARTITIONS := \
     vendor_dlkm
 
 # Architecture
-# armv9-a and later enable SVE2 in clang, but the CPU does not expose SVE: no-boot.
+# The CPU does not expose SVE, so armv9-2a needs the +nosve from vendor/tweaks: no-boot without it.
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-7a
+TARGET_ARCH_VARIANT := armv9-2a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := generic
 # oryon is the SD 8 Elite custom core and appears in NONE of ART's arm64
