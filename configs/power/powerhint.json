@@ -430,12 +430,6 @@
         },
         {
             "PowerHint": "INTERACTION",
-            "Node": "sysDevicesSystemCpuCpu2CoreCtlEnable",
-            "Value": "0",
-            "Duration": 0
-        },
-        {
-            "PowerHint": "INTERACTION",
             "Node": "sysDevicesSystemCpuBusDcvsLlcc240b7400QcomBwmonLlccMaxFreq",
             "Value": "933000",
             "Duration": 0
