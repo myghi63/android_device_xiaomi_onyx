@@ -1,0 +1,19 @@
+# Redefines the stock composer service with rendering task profiles.
+#
+# Top-level vendor rc files are parsed in lexicographic order, and this file
+# sorts after the stock vendor.qti.hardware.display.composer-service_xiaomi.rc,
+# so `override` genuinely replaces it. Every field of the stock definition is
+# reproduced verbatim; only task_profiles is added.
+service vendor.qti.hardware.display.composer /vendor/bin/hw/vendor.qti.hardware.display.composer-service
+    override
+    class hal animation
+    user system
+    group graphics drmrpc
+    capabilities SYS_NICE
+    onrestart restart surfaceflinger
+    socket pps stream 0660 system system
+    writepid /dev/cpuset/system-background/tasks
+    # MIUI ADD: Performance_MemoryEnhance
+    writepid /sys/kernel/reserve_pool/pid
+    # END Performance_MemoryEnhance
+    task_profiles ProcessCapacityHigh HighPerformance
