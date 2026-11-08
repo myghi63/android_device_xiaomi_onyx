@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.Display
 import android.view.Display.HdrCapabilities
 import com.xiaomi.settings.display.ColorService
+import com.xiaomi.settings.thermal.ThermalUtils
 
 class BootCompletedReceiver : BroadcastReceiver() {
 
@@ -37,6 +38,7 @@ class BootCompletedReceiver : BroadcastReceiver() {
     }
 
     private fun onBootCompleted(context: Context) {
+        ThermalUtils.startService(context)
     }
 
     private fun onLockedBootCompleted(context: Context) {
