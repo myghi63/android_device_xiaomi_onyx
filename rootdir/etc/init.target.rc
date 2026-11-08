@@ -113,6 +113,10 @@ on early-boot
     verity_update_state
 
 on boot
+    # Default to the world regulatory domain so a SIM-less or
+    # airplane-mode boot keeps full channel support; the framework
+    # overwrites this with the real country once a SIM is read.
+    setprop ro.boot.wificountrycode 00
     write /dev/cpuset/audio-app/cpus 0-1
     # Add a cpuset for the camera daemon
     # We want all cores for camera
