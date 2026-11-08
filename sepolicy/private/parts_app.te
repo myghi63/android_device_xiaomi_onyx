@@ -18,3 +18,7 @@ allow parts_app system_app_data_file:lnk_file create_file_perms;
 # Thermal scenes: write sconfig (/sys/devices/virtual/thermal/...)
 allow parts_app sysfs_thermal:dir r_dir_perms;
 allow parts_app sysfs_thermal:file w_file_perms;
+
+# Bypass charging: charge_enable client arbitration node (MCA charger)
+allow parts_app vendor_sysfs_xm_power:dir r_dir_perms;
+allow parts_app vendor_sysfs_xm_power:file rw_file_perms;

@@ -53,6 +53,10 @@ on boot
     chown system system /sys/class/thermal/thermal_message/cpu_nolimit_temp
     #END Thermal_NodeReq
 
+    # BYPASS: charge-path arbitration node for XiaomiParts (bypass charging)
+    chown root system /sys/class/xm_power/charger/charge_interface/charge_enable
+    chmod 0660 /sys/class/xm_power/charger/charge_interface/charge_enable
+
     # Xiaomi touch
     chown system system /sys/class/touch/touch_dev/fod_longpress_gesture_enabled
     chmod 0660 /sys/class/touch/touch_dev/fod_longpress_gesture_enabled

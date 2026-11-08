@@ -1,0 +1,4 @@
+# Charger: declared here (system_ext public) so the platform-side parts_app
+# rules in sepolicy/private/parts_app.te can reference it; the vendor-side
+# genfs_contexts/file_contexts and vendor domains see it through the public API.
+type vendor_sysfs_xm_power, fs_type, sysfs_type;

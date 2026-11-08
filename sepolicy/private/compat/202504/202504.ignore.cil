@@ -1,9 +1,9 @@
-;; new_objects - a collection of types that have been introduced that have no
-;;   analogue in older policy. Thus, we do not need to map these types to
-;;   previous ones. Add here to pass checkapi/treble compatibility tests.
+;; Device-specific system_ext types introduced after the 202504 policy API.
 (type new_objects)
 (typeattribute new_objects)
 (typeattributeset new_objects
   ( new_objects
     vendor_hal_displayfeature_xiaomi_default
-    vendor_hal_displayfeature_xiaomi_service))
+    vendor_hal_displayfeature_xiaomi_service
+    vendor_sysfs_xm_power
+  ))
