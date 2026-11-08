@@ -126,9 +126,12 @@ function configure_min_free_kbytes()
 	MemTotal=${MemTotalStr:16:8}
 	let RamSizeGB="( $MemTotal / 1048576 ) + 1"
     # Set the min_free_kbytes to standard kernel value
-	if [ $RamSizeGB -ge 12 ]; then
-		# 12GB, 16GB
-		MinFreeKbytes=11584
+	if [ $RamSizeGB -ge 11 ]; then
+		# 12GB, 16GB: keep a 32MB atomic reserve so bursts (camera,
+		# cold app start) rarely hit direct reclaim on this part.
+		# onyx 12GB reports MemTotal ~11.5GB, so the tier computes
+		# RamSizeGB=11 and would never reach a "-ge 12" branch.
+		MinFreeKbytes=32768
 	elif [ $RamSizeGB -ge 8 ]; then
 		# 8GB
 		MinFreeKbytes=11584
