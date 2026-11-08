@@ -13,6 +13,9 @@ $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 # Inherit from onyx device
 $(call inherit-product, device/xiaomi/onyx/device.mk)
 
+# Optional add-on repos (no-op when absent).
+$(call inherit-product-if-exists, vendor/pocketlock/pocket.mk)
+
 PRODUCT_NAME := lineage_onyx
 PRODUCT_DEVICE := onyx
 PRODUCT_MANUFACTURER := Xiaomi
