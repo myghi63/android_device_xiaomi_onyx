@@ -41,6 +41,25 @@
             android:name=".thermal.ThermalService"
             android:exported="false" />
 
+        <activity
+            android:name=".charge.ChargeSettingsActivity"
+            android:exported="true"
+            android:label="@string/bypass_charging_title"
+            android:theme="@android:style/Theme.DeviceDefault.Settings">
+            <intent-filter>
+                <action android:name="com.android.settings.action.IA_SETTINGS" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.settings.category"
+                android:value="com.android.settings.category.ia.battery" />
+            <meta-data
+                android:name="com.android.settings.icon"
+                android:resource="@drawable/ic_charge_bypass" />
+            <meta-data
+                android:name="com.android.settings.order"
+                android:value="-250" />
+        </activity>
+
     </application>
 </manifest>
 

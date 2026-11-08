@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:key="onyx_bypass_gaming"
+        android:title="@string/bypass_gaming_title"
+        android:summary="@string/bypass_gaming_summary" />
+
+</PreferenceScreen>

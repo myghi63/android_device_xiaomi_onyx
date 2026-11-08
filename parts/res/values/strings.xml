@@ -6,4 +6,11 @@
 <resources>
     <!-- App Name -->
     <string name="app_name">Xiaomi Parts</string>
+
+    <!-- Bypass charging (Settings > Battery entry title) -->
+    <string name="bypass_charging_title">Bypass charging</string>
+    <!-- Switch label in the bypass charging page -->
+    <string name="bypass_gaming_title">Bypass while gaming</string>
+    <!-- Explanation of what the switch does -->
+    <string name="bypass_gaming_summary">While a game is in the foreground, the adapter powers the device directly and the battery stops charging. Needs the device plugged in; refused above 45 °C or below 20 %.</string>
 </resources>

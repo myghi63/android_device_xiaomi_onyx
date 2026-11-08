@@ -102,7 +102,7 @@ class ThermalUtils private constructor(private val context: Context) {
 
     private val gameFlags = HashMap<String, Boolean>()
 
-    private fun isGame(packageName: String): Boolean =
+    fun isGame(packageName: String): Boolean =
         gameFlags.getOrPut(packageName) {
             try {
                 val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
