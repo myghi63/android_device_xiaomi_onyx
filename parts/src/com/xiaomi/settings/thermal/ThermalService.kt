@@ -38,9 +38,9 @@ class ThermalService : android.app.Service() {
 
     private val settingsObserver = object : ContentObserver(handler) {
         override fun onChange(selfChange: Boolean) {
-            if (!destroyed && screenOn && currentPackage.isNotEmpty()) {
-                bypass.applyFor(utils.isGame(currentPackage))
-            }
+            // Re-query foreground instead of trusting the cached package,
+            // which is empty after a service restart.
+            if (!destroyed && screenOn) scheduleApply()
         }
     }
 
@@ -61,9 +61,7 @@ class ThermalService : android.app.Service() {
                 // comes or goes while a game is already in foreground.
                 Intent.ACTION_POWER_CONNECTED,
                 Intent.ACTION_POWER_DISCONNECTED -> {
-                    if (screenOn && currentPackage.isNotEmpty()) {
-                        bypass.applyFor(utils.isGame(currentPackage))
-                    }
+                    if (screenOn) scheduleApply()
                 }
             }
         }
@@ -103,7 +101,10 @@ class ThermalService : android.app.Service() {
         applyScene()
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG, "onStartCommand")
+        return START_STICKY
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -139,14 +140,22 @@ class ThermalService : android.app.Service() {
             return
         }
         val packageName = try {
-            ActivityTaskManager.getService()
-                .focusedRootTaskInfo?.topActivity?.packageName ?: return
+            val info = ActivityTaskManager.getService().focusedRootTaskInfo
+            if (info == null) {
+                Log.d(TAG, "focusedRootTaskInfo is null")
+                return
+            }
+            info.topActivity?.packageName ?: run {
+                Log.d(TAG, "topActivity is null")
+                return
+            }
         } catch (e: Exception) {
             Log.w(TAG, "Cannot query foreground", e)
             return
         }
         if (packageName == currentPackage && retryCount == 0) return
         currentPackage = packageName
+        Log.d(TAG, "foreground=$packageName game=${utils.isGame(packageName)}")
         if (utils.writeSceneFor(packageName)) {
             retryCount = 0
         } else if (retryCount < 3) {
