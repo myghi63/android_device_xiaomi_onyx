@@ -157,7 +157,12 @@ class ThermalService : android.app.Service() {
             Log.w(TAG, "Cannot query foreground", e)
             return
         }
-        if (packageName == currentPackage && retryCount == 0) return
+        if (packageName == currentPackage && retryCount == 0) {
+            // The scene is already applied for this package, but the bypass decision
+            // may have changed under it (setting toggle, plug/unplug).
+            bypass.applyFor(utils.isGame(packageName))
+            return
+        }
         currentPackage = packageName
         Log.d(TAG, "foreground=$packageName game=${utils.isGame(packageName)}")
         if (utils.writeSceneFor(packageName)) {
