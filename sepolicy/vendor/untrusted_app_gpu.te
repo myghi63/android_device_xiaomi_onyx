@@ -1,0 +1,8 @@
+# GPU stats/clock nodes (/sys/class/kgsl/kgsl-3d0/*, label vendor_sysfs_kgsl):
+# DevCheck, system monitors and Winlator-derivatives read gpu_busy_percentage,
+# clock_mhz, gpu_clock_stats and the devfreq subtree. DAC is already 0444, the
+# only gate is SELinux. Follows the house pattern of ntsync.te (same dir) and
+# the QC sm8750 rule allowing untrusted_app_all to search vendor_sysfs_* dirs.
+allow untrusted_app_all vendor_sysfs_kgsl:dir search;
+allow untrusted_app_all vendor_sysfs_kgsl:file r_file_perms;
+allow untrusted_app_all vendor_sysfs_kgsl:lnk_file read;
