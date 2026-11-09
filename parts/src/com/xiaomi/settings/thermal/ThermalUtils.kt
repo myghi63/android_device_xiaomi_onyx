@@ -11,6 +11,7 @@ import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.os.SystemProperties
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import java.io.File
 
@@ -26,6 +27,9 @@ class ThermalUtils private constructor(private val context: Context) {
         private const val TAG = "ThermalUtils"
         private const val SCONFIG = "/sys/class/thermal/thermal_message/sconfig"
         private const val PROP_AUTO = "persist.sys.onyx.thermal.auto"
+
+        /** User-maintained game list (Settings.System string, ":" or "," separated). */
+        const val SETTINGS_GAME_LIST = "onyx_game_list"
 
         const val SCENE_DEFAULT = 19  // MGAME, boot default (keeps fast charging)
         const val SCENE_PHONE = 5
@@ -102,6 +106,8 @@ class ThermalUtils private constructor(private val context: Context) {
 
     private val gameFlags = HashMap<String, Boolean>()
 
+    // Many real games (e.g. Subway Surfers) never declare FLAG_IS_GAME, so a
+    // user-maintained list (Settings.System "onyx_game_list") complements the flag.
     fun isGame(packageName: String): Boolean =
         gameFlags.getOrPut(packageName) {
             try {
@@ -110,5 +116,13 @@ class ThermalUtils private constructor(private val context: Context) {
             } catch (e: Exception) {
                 false
             }
-        }
+        } || userGameList().contains(packageName)
+
+    private fun userGameList(): Set<String> =
+        Settings.System.getString(context.contentResolver, SETTINGS_GAME_LIST)
+            ?.split(':', ',')
+            ?.map { it.trim() }
+            ?.filter { it.isNotEmpty() }
+            ?.toSet()
+            ?: emptySet()
 }
