@@ -94,8 +94,9 @@ class BypassChargeUtils private constructor(private val context: Context) {
         if (sticky.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) == 0) return "not plugged in"
         val temp = sticky.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)
         if (temp >= MAX_BATTERY_TEMP) return "battery at ${temp / 10.0f} C"
-        val level = context.getSystemService(BatteryManager::class.java)
-            ?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: 0
+        // getIntProperty(BATTERY_PROPERTY_CAPACITY) is @SystemApi: it throws for
+        // non-platform apps here, so read the level from the same sticky broadcast.
+        val level = sticky.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
         if (level < MIN_BATTERY_CAPACITY) return "battery at $level%"
         return null
     }
