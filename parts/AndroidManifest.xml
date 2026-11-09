@@ -57,7 +57,7 @@
                 android:resource="@drawable/ic_charge_bypass" />
             <meta-data
                 android:name="com.android.settings.order"
-                android:value="-250" />
+                android:value="-1000" />
         </activity>
 
     </application>
