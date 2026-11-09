@@ -29,18 +29,24 @@ class ThermalService : android.app.Service() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var utils: ThermalUtils
     private lateinit var bypass: BypassChargeUtils
-    private var screenOn = false
+    private lateinit var power: PowerManager
     private var currentPackage = ""
     private var retryCount = 0
     @Volatile private var destroyed = false
 
     private val applyRunnable = Runnable { applyScene() }
 
+    // Ask the power manager instead of caching the state: at boot the display is
+    // not interactive yet when the service is created, and no ACTION_SCREEN_ON is
+    // sent afterwards if the screen never turned off, which left the cached flag
+    // stuck at false and every evaluation silently skipped.
+    private fun interactive() = power.isInteractive
+
     private val settingsObserver = object : ContentObserver(handler) {
         override fun onChange(selfChange: Boolean) {
             // Re-query foreground instead of trusting the cached package,
             // which is empty after a service restart.
-            if (!destroyed && screenOn) scheduleApply()
+            if (!destroyed && interactive()) scheduleApply()
         }
     }
 
@@ -48,20 +54,18 @@ class ThermalService : android.app.Service() {
         override fun onReceive(context: Context, intent: Intent?) {
             when (intent?.action) {
                 Intent.ACTION_SCREEN_OFF -> {
-                    screenOn = false
                     currentPackage = ""
                     utils.writeDefault()
                     bypass.release()
                 }
                 Intent.ACTION_SCREEN_ON -> {
-                    screenOn = true
                     scheduleApply()
                 }
                 // Plug state is a bypass guard: re-evaluate when the cable
                 // comes or goes while a game is already in foreground.
                 Intent.ACTION_POWER_CONNECTED,
                 Intent.ACTION_POWER_DISCONNECTED -> {
-                    if (screenOn) scheduleApply()
+                    if (interactive()) scheduleApply()
                 }
             }
         }
@@ -78,7 +82,7 @@ class ThermalService : android.app.Service() {
         utils = ThermalUtils.getInstance(this)
         bypass = BypassChargeUtils.getInstance(this)
         bypass.clearStaleRequest()
-        screenOn = getSystemService(PowerManager::class.java)?.isInteractive == true
+        power = getSystemService(Context.POWER_SERVICE) as PowerManager
 
         registerReceiver(
             intentReceiver,
@@ -133,7 +137,7 @@ class ThermalService : android.app.Service() {
 
     private fun applyScene() {
         if (destroyed) return
-        if (!screenOn) {
+        if (!interactive()) {
             currentPackage = ""
             retryCount = 0
             utils.writeDefault()
