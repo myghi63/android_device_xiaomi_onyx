@@ -57,6 +57,14 @@ class ThermalService : android.app.Service() {
                     screenOn = true
                     scheduleApply()
                 }
+                // Plug state is a bypass guard: re-evaluate when the cable
+                // comes or goes while a game is already in foreground.
+                Intent.ACTION_POWER_CONNECTED,
+                Intent.ACTION_POWER_DISCONNECTED -> {
+                    if (screenOn && currentPackage.isNotEmpty()) {
+                        bypass.applyFor(utils.isGame(currentPackage))
+                    }
+                }
             }
         }
     }
@@ -79,6 +87,8 @@ class ThermalService : android.app.Service() {
             IntentFilter().apply {
                 addAction(Intent.ACTION_SCREEN_OFF)
                 addAction(Intent.ACTION_SCREEN_ON)
+                addAction(Intent.ACTION_POWER_CONNECTED)
+                addAction(Intent.ACTION_POWER_DISCONNECTED)
             },
             Context.RECEIVER_NOT_EXPORTED,
         )
