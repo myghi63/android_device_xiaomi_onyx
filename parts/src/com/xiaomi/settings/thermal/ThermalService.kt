@@ -29,7 +29,7 @@ class ThermalService : android.app.Service() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var utils: ThermalUtils
     private lateinit var bypass: BypassChargeUtils
-    private lateinit var power: PowerManager
+    private var power: PowerManager? = null
     private var currentPackage = ""
     private var retryCount = 0
     @Volatile private var destroyed = false
@@ -40,7 +40,7 @@ class ThermalService : android.app.Service() {
     // not interactive yet when the service is created, and no ACTION_SCREEN_ON is
     // sent afterwards if the screen never turned off, which left the cached flag
     // stuck at false and every evaluation silently skipped.
-    private fun interactive() = power.isInteractive
+    private fun interactive() = power?.isInteractive == true
 
     private val settingsObserver = object : ContentObserver(handler) {
         override fun onChange(selfChange: Boolean) {
@@ -82,7 +82,8 @@ class ThermalService : android.app.Service() {
         utils = ThermalUtils.getInstance(this)
         bypass = BypassChargeUtils.getInstance(this)
         bypass.clearStaleRequest()
-        power = getSystemService(Context.POWER_SERVICE) as PowerManager
+        power = getSystemService(PowerManager::class.java)
+        if (power == null) Log.w(TAG, "Power service unavailable: screen state unknown")
 
         registerReceiver(
             intentReceiver,
