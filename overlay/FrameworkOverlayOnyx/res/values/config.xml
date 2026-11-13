@@ -894,6 +894,13 @@
          fp screen off unlock-->
     <bool name="config_screen_off_udfps_default_on">true</bool>
 
+    <!-- crDroid's status/navigation bar burn-in protection (SystemUI
+         BurnInProtectionController, shifts both bars every
+         config_systemBarBurnInProtectionShiftInterval seconds) is gated on
+         config_systemBarBurnInProtection -> @android:bool/config_enableBurnInProtection,
+         which AOSP ships false. AMOLED panel, so turn it on. -->
+    <bool name="config_enableBurnInProtection">true</bool>
+
     <!-- Pocket Lock -->
     <string name="config_pocketJudgeVendorSensorName" translatable="false">xiaomi.sensor.nonui</string>
     <item name="config_pocketJudgeVendorSensorValue" format="float" type="dimen">1.0</item>
