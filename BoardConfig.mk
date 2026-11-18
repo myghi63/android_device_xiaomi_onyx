@@ -276,5 +276,8 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 # Product-scoped tweaks are pulled in from device.mk separately.
 -include vendor/tweaks/BoardConfig.mk
 
+# Stock camera (MiuiCamera) add-on: soft include, brings its sepolicy + system.prop.
+-include device/xiaomi/onyx-miuicamera/BoardConfig.mk
+
 # Vendor
 include vendor/xiaomi/onyx/BoardConfigVendor.mk
