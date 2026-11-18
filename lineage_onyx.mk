@@ -15,6 +15,7 @@ $(call inherit-product, device/xiaomi/onyx/device.mk)
 
 # Optional add-on repos (no-op when absent).
 $(call inherit-product-if-exists, vendor/pocketlock/pocket.mk)
+$(call inherit-product-if-exists, device/xiaomi/onyx-miuicamera/device.mk)
 
 # crDroid builds the Lineage Updater and points it at the official crDroid OTA
 # index (vendor/crDroidOTA/<device>.json), which would offer the official onyx
