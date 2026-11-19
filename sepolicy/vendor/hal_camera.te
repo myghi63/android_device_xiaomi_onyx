@@ -31,6 +31,12 @@ allow hal_camera_default vendor_displayfeature_device:chr_file { ioctl open read
 # AlgoFwkThd* threads read the GPU devfreq link and the DSI panel node for perf tuning
 allow hal_camera_default vendor_sysfs_kgsl:lnk_file read;
 allow hal_camera_default vendor_sysfs_displayfeature:dir search;
+
+# The stock HEIF path muxes into a memfd named "HEIF-<n>-<ts>-F" (unlabeled, so
+# tmpfs:s0) handed over by the camera app; without this the muxer writes nothing
+# and the saved .HEIC is a pre-sized file full of zeros. Same permission as the
+# HyperOS vendor policy (allow hal_camera_default tmpfs:file read write getattr).
+allow hal_camera_default tmpfs:file { read write getattr };
 add_service(hal_camera_server, hal_aidlbgservice_service)
 add_service(hal_camera_server, hal_camera_aon_service)
 add_service(hal_camera_server, hal_dynamic_camera_service)
