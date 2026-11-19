@@ -7,6 +7,12 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+# Camera: MiuiCamera (device/xiaomi/onyx-miuicamera) is the camera app here, and
+# Aperture trips the stock camera HAL: its CameraX path opens the physical device
+# 0 while MiuiCamera opens the logical 3 + 0, and the provider aborts in
+# CSLAcquireDeviceHW. Drop Aperture, like other trees do.
+PRODUCT_NO_CAMERA := true
+
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
