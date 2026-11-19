@@ -28,6 +28,9 @@ allow hal_camera_default sys_thermal_torch_real_level:file { w_file_perms getatt
 allow hal_camera_default sysfs_csiphy_umd_paras:file { open read write };
 allow hal_camera_default vendor_camera_data_file:sock_file { create getattr open read setattr unlink write };
 allow hal_camera_default vendor_displayfeature_device:chr_file { ioctl open read };
+# AlgoFwkThd* threads read the GPU devfreq link and the DSI panel node for perf tuning
+allow hal_camera_default vendor_sysfs_kgsl:lnk_file read;
+allow hal_camera_default vendor_sysfs_displayfeature:dir search;
 add_service(hal_camera_server, hal_aidlbgservice_service)
 add_service(hal_camera_server, hal_camera_aon_service)
 add_service(hal_camera_server, hal_dynamic_camera_service)
