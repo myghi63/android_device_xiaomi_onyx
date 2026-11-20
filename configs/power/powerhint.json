@@ -31,6 +31,16 @@
             "ResetOnInit": true
         },
         {
+            "Name": "sysDevicesClassKgslKgsl3d0DevfreqMinFreq",
+            "Path": "/sys/class/kgsl/kgsl-3d0/devfreq/min_freq",
+            "Values": [
+                "264000000",
+                "644000000"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
             "Name": "procSysWaltSchedBoost",
             "Path": "/proc/sys/walt/sched_boost",
             "Values": [
@@ -583,6 +593,12 @@
             "PowerHint": "INTERACTION",
             "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveHighFreq",
             "Value": "2208000",
+            "Duration": 2000
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesClassKgslKgsl3d0DevfreqMinFreq",
+            "Value": "644000000",
             "Duration": 2000
         },
         {
