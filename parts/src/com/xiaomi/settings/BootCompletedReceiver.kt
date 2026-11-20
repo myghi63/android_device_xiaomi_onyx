@@ -12,17 +12,15 @@ import android.hardware.display.DisplayManager
 import android.util.Log
 import android.view.Display
 import android.view.Display.HdrCapabilities
-import com.xiaomi.settings.charge.BypassChargeUtils
 import com.xiaomi.settings.display.ColorService
-import com.xiaomi.settings.thermal.ThermalUtils
 
 class BootCompletedReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (DEBUG) Log.d(TAG, "Received boot completed intent: ${intent.action}")
         when (intent.action) {
-            Intent.ACTION_BOOT_COMPLETED -> onBootCompleted(context)
-            Intent.ACTION_LOCKED_BOOT_COMPLETED -> onLockedBootCompleted(context)
+            // Display
+            Intent.ACTION_LOCKED_BOOT_COMPLETED -> ColorService.startService(context)
         }
 
         // Override HDR types
@@ -36,20 +34,6 @@ class BootCompletedReceiver : BroadcastReceiver() {
                 HdrCapabilities.HDR_TYPE_HDR10_PLUS
             )
         )
-    }
-
-    private fun onBootCompleted(context: Context) {
-        // The forced bypass is a request for the current session only: it must not
-        // survive a reboot.
-        BypassChargeUtils.getInstance(context).clearAlwaysRequest()
-        // Same for the forced thermal scene.
-        ThermalUtils.getInstance(context).clearAlwaysProfile()
-        ThermalUtils.startService(context)
-    }
-
-    private fun onLockedBootCompleted(context: Context) {
-        // Display
-        ColorService.startService(context)
     }
 
     companion object {
