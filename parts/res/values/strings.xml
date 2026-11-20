@@ -12,7 +12,7 @@
     <!-- Switch label in the bypass charging page -->
     <string name="bypass_gaming_title">Bypass while gaming</string>
     <!-- Explanation of what the switch does -->
-    <string name="bypass_gaming_summary">While an app from the game list is in the foreground, the adapter powers the device directly and the battery stops charging. Needs the device plugged in; refused above 45 °C or below 20 %.</string>
+    <string name="bypass_gaming_summary">Enabled by default. While an app from the game list is in the foreground, the adapter powers the device directly and the battery stops charging. Needs the device plugged in; refused above 45 °C or below 20 %.</string>
     <!-- Switch label: force bypass whatever the foreground app is -->
     <string name="bypass_now_title">Bypass now</string>
     <!-- Explanation of the forced bypass switch -->

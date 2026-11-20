@@ -93,7 +93,7 @@ class ChargeSettingsActivity : PreferenceActivity(),
     }
 
     private fun isBypassGamingEnabled(): Boolean =
-        Settings.System.getInt(contentResolver, BypassChargeUtils.SETTING_BYPASS_GAMING, 0) == 1
+        Settings.System.getInt(contentResolver, BypassChargeUtils.SETTING_BYPASS_GAMING, 1) == 1
 
     private fun isBypassAlwaysEnabled(): Boolean =
         Settings.System.getInt(contentResolver, BypassChargeUtils.SETTING_BYPASS_ALWAYS, 0) == 1

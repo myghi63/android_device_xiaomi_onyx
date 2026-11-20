@@ -37,7 +37,7 @@ class BypassChargeUtils private constructor(private val context: Context) {
         private const val MAX_BATTERY_TEMP = 450 // deci-degrees C
         private const val MIN_BATTERY_CAPACITY = 20 // percent
 
-        /** Settings.System switch: bypass charging while a game is in the foreground. */
+        /** Settings.System switch: bypass charging while a game is in the foreground. On by default. */
         const val SETTING_BYPASS_GAMING = "onyx_bypass_gaming"
 
         /**
@@ -148,7 +148,7 @@ class BypassChargeUtils private constructor(private val context: Context) {
     }
 
     private fun isSettingEnabled(): Boolean =
-        Settings.System.getInt(context.contentResolver, SETTING_BYPASS_GAMING, 0) == 1
+        Settings.System.getInt(context.contentResolver, SETTING_BYPASS_GAMING, 1) == 1
 
     private fun isAlwaysEnabled(): Boolean =
         Settings.System.getInt(context.contentResolver, SETTING_BYPASS_ALWAYS, 0) == 1
