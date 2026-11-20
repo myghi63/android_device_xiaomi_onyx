@@ -5,15 +5,17 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="onyx_game_list_auto"
         android:title="@string/game_list_auto_title"
-        android:summary="@string/game_list_auto_summary" />
+        android:summary="@string/game_list_auto_summary"
+        android:persistent="false" />
 
     <Preference
         android:key="onyx_game_list_add"
         android:title="@string/game_list_add_title"
-        android:summary="@string/game_list_add_summary" />
+        android:summary="@string/game_list_add_summary"
+        android:persistent="false" />
 
     <PreferenceCategory
         android:key="onyx_game_list_entries"

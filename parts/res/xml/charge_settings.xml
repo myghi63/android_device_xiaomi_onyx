@@ -9,20 +9,23 @@
         android:key="gaming_category"
         android:title="@string/charge_section_gaming_title" >
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="onyx_bypass_gaming"
             android:title="@string/bypass_gaming_title"
-            android:summary="@string/bypass_gaming_summary" />
+            android:summary="@string/bypass_gaming_summary"
+            android:persistent="false" />
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="onyx_thermal_gaming"
             android:title="@string/thermal_gaming_title"
-            android:summary="@string/thermal_gaming_summary" />
+            android:summary="@string/thermal_gaming_summary"
+            android:persistent="false" />
 
         <Preference
             android:key="onyx_game_list_page"
             android:title="@string/game_list_title"
-            android:summary="@string/game_list_summary" />
+            android:summary="@string/game_list_summary"
+            android:persistent="false" />
 
     </PreferenceCategory>
 
@@ -30,15 +33,17 @@
         android:key="forced_category"
         android:title="@string/charge_section_forced_title" >
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="onyx_bypass_always"
             android:title="@string/bypass_now_title"
-            android:summary="@string/bypass_now_summary" />
+            android:summary="@string/bypass_now_summary"
+            android:persistent="false" />
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="onyx_thermal_always"
             android:title="@string/thermal_now_title"
-            android:summary="@string/thermal_now_summary" />
+            android:summary="@string/thermal_now_summary"
+            android:persistent="false" />
 
     </PreferenceCategory>
 

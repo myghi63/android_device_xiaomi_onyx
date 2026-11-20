@@ -46,8 +46,7 @@
         <activity
             android:name=".charge.ChargeSettingsActivity"
             android:exported="true"
-            android:label="@string/gaming_charging_title"
-            android:theme="@android:style/Theme.DeviceDefault.Settings">
+            android:label="@string/gaming_charging_title">
             <intent-filter>
                 <action android:name="com.android.settings.action.IA_SETTINGS" />
             </intent-filter>
@@ -71,8 +70,7 @@
         <activity
             android:name=".charge.GameListSettingsActivity"
             android:exported="false"
-            android:label="@string/game_list_title"
-            android:theme="@android:style/Theme.DeviceDefault.Settings" />
+            android:label="@string/game_list_title" />
 
     </application>
 </manifest>
