@@ -111,7 +111,8 @@
             "Path": "/sys/devices/system/cpu/cpufreq/policy2/walt/adaptive_high_freq",
             "Values": [
                 "0",
-                "1632000"
+                "1632000",
+                "2208000"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -131,6 +132,7 @@
             "Path": "/sys/devices/system/cpu/cpufreq/policy2/walt/adaptive_low_freq",
             "Values": [
                 "0",
+                "940800",
                 "1286400"
             ],
             "DefaultIndex": 0,
@@ -151,7 +153,8 @@
             "Path": "/sys/devices/system/cpu/cpufreq/policy2/walt/adaptive_level_1",
             "Values": [
                 "0",
-                "1056000"
+                "1056000",
+                "1516800"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -562,6 +565,24 @@
             "PowerHint": "INTERACTION",
             "Node": "sysDevicesSystemCpuCpu7WaltAdaptiveHighFreq",
             "Value": "3014400",
+            "Duration": 2000
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLowFreq",
+            "Value": "940800",
+            "Duration": 2000
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLevel1",
+            "Value": "1516800",
+            "Duration": 2000
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveHighFreq",
+            "Value": "2208000",
             "Duration": 2000
         },
         {
