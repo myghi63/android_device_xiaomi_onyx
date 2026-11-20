@@ -11,6 +11,7 @@ import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.os.SystemProperties
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import java.io.File
 
@@ -26,6 +27,15 @@ class ThermalUtils private constructor(private val context: Context) {
         private const val TAG = "ThermalUtils"
         private const val SCONFIG = "/sys/class/thermal/thermal_message/sconfig"
         private const val PROP_AUTO = "persist.sys.onyx.thermal.auto"
+
+        /** Game list maintained in the bypass charging page. */
+        const val SETTINGS_GAME_LIST = "onyx_game_list"
+
+        /** Apps the user took out of the list: the automatic source must not put them back. */
+        const val SETTINGS_GAME_LIST_EXCLUDED = "onyx_game_list_excluded"
+
+        /** Switch that lets apps declaring FLAG_IS_GAME join the list automatically. Default on. */
+        const val SETTINGS_GAME_LIST_AUTO = "onyx_game_list_auto"
 
         const val SCENE_DEFAULT = 19  // MGAME, boot default (keeps fast charging)
         const val SCENE_PHONE = 5
@@ -102,7 +112,7 @@ class ThermalUtils private constructor(private val context: Context) {
 
     private val gameFlags = HashMap<String, Boolean>()
 
-    fun isGame(packageName: String): Boolean =
+    private fun hasGameFlag(packageName: String): Boolean =
         gameFlags.getOrPut(packageName) {
             try {
                 val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
@@ -111,4 +121,64 @@ class ThermalUtils private constructor(private val context: Context) {
                 false
             }
         }
+
+    /**
+     * Membership of the game list, which is what decides the gaming scene and the bypass:
+     * the apps the user put in the list, plus the ones declaring FLAG_IS_GAME while
+     * [SETTINGS_GAME_LIST_AUTO] is on. Apps the user took out stay out.
+     */
+    fun isGame(packageName: String): Boolean =
+        gameList().contains(packageName) ||
+            (isAutoGameEnabled() && hasGameFlag(packageName) && !isRemoved(packageName))
+
+    fun isAutoGameEnabled(): Boolean =
+        Settings.System.getInt(context.contentResolver, SETTINGS_GAME_LIST_AUTO, 1) == 1
+
+    fun addGame(packageName: String) {
+        writePackages(SETTINGS_GAME_LIST, gameList() + packageName)
+        writePackages(SETTINGS_GAME_LIST_EXCLUDED, excludedGames() - packageName)
+    }
+
+    fun removeGame(packageName: String) {
+        writePackages(SETTINGS_GAME_LIST, gameList() - packageName)
+        writePackages(SETTINGS_GAME_LIST_EXCLUDED, excludedGames() + packageName)
+    }
+
+    /** An app that can be launched, with its membership in the game list. */
+    class App(val packageName: String, val label: String, val listed: Boolean)
+
+    /** Launchable apps, sorted by label. */
+    fun apps(): List<App> {
+        val pm = context.packageManager
+        return pm.getInstalledApplications(0)
+            .mapNotNull { info ->
+                if (pm.getLaunchIntentForPackage(info.packageName) == null) return@mapNotNull null
+                val listed = isGame(info.packageName)
+                App(info.packageName, pm.getApplicationLabel(info).toString(), listed)
+            }
+            .sortedBy { it.label.lowercase() }
+    }
+
+    /** Whether the user took this app out of the list. */
+    fun isRemoved(packageName: String): Boolean = excludedGames().contains(packageName)
+
+    private fun gameList(): Set<String> = readPackages(SETTINGS_GAME_LIST)
+
+    private fun excludedGames(): Set<String> = readPackages(SETTINGS_GAME_LIST_EXCLUDED)
+
+    private fun readPackages(key: String): Set<String> =
+        Settings.System.getString(context.contentResolver, key)
+            ?.split(':', ',')
+            ?.map { it.trim() }
+            ?.filter { it.isNotEmpty() }
+            ?.toSet()
+            ?: emptySet()
+
+    private fun writePackages(key: String, packages: Set<String>) {
+        Settings.System.putString(
+            context.contentResolver,
+            key,
+            if (packages.isEmpty()) null else packages.joinToString(","),
+        )
+    }
 }

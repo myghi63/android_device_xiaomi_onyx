@@ -18,6 +18,8 @@ import android.os.Looper
 import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
+import com.xiaomi.settings.R
 import com.xiaomi.settings.charge.BypassChargeUtils
 
 class ThermalService : android.app.Service() {
@@ -32,6 +34,7 @@ class ThermalService : android.app.Service() {
     private var power: PowerManager? = null
     private var currentPackage = ""
     private var retryCount = 0
+    private var lastNotice = ""
     @Volatile private var destroyed = false
 
     private val applyRunnable = Runnable { applyScene() }
@@ -47,6 +50,16 @@ class ThermalService : android.app.Service() {
             // Re-query foreground instead of trusting the cached package,
             // which is empty after a service restart.
             if (!destroyed && interactive()) scheduleApply()
+        }
+    }
+
+    private val gameListObserver = object : ContentObserver(handler) {
+        override fun onChange(selfChange: Boolean) {
+            if (destroyed) return
+            // The list decides both the scene and the bypass, so the scene of the app
+            // already in the foreground must be written again: forget the cached package.
+            currentPackage = ""
+            scheduleApply()
         }
     }
 
@@ -98,6 +111,18 @@ class ThermalService : android.app.Service() {
         contentResolver.registerContentObserver(
             Settings.System.getUriFor(BypassChargeUtils.SETTING_BYPASS_GAMING), false, settingsObserver,
         )
+        contentResolver.registerContentObserver(
+            Settings.System.getUriFor(BypassChargeUtils.SETTING_BYPASS_ALWAYS), false, settingsObserver,
+        )
+        for (key in listOf(
+            ThermalUtils.SETTINGS_GAME_LIST,
+            ThermalUtils.SETTINGS_GAME_LIST_AUTO,
+            ThermalUtils.SETTINGS_GAME_LIST_EXCLUDED,
+        )) {
+            contentResolver.registerContentObserver(
+                Settings.System.getUriFor(key), false, gameListObserver,
+            )
+        }
         try {
             ActivityTaskManager.getService().registerTaskStackListener(taskListener)
         } catch (e: Exception) {
@@ -161,10 +186,12 @@ class ThermalService : android.app.Service() {
         if (packageName == currentPackage && retryCount == 0) {
             // The scene is already applied for this package, but the bypass decision
             // may have changed under it (setting toggle, plug/unplug).
-            bypass.applyFor(utils.isGame(packageName))
+            applyBypass(utils.isGame(packageName))
             return
         }
         currentPackage = packageName
+        // A new foreground app may warn again about the same condition.
+        lastNotice = ""
         Log.d(TAG, "foreground=$packageName game=${utils.isGame(packageName)}")
         if (utils.writeSceneFor(packageName)) {
             retryCount = 0
@@ -174,6 +201,28 @@ class ThermalService : android.app.Service() {
             handler.removeCallbacks(applyRunnable)
             handler.postDelayed(applyRunnable, 1000)
         }
-        bypass.applyFor(utils.isGame(packageName))
+        applyBypass(utils.isGame(packageName))
+    }
+
+    private fun applyBypass(inGame: Boolean) {
+        val decision = bypass.applyFor(inGame)
+        when (decision.outcome) {
+            BypassChargeUtils.Outcome.ENABLED -> {
+                Log.i(TAG, "bypass enabled")
+                Toast.makeText(this, R.string.bypass_enabled_notice, Toast.LENGTH_LONG).show()
+            }
+            BypassChargeUtils.Outcome.REFUSED -> {
+                val guard = decision.guard ?: return
+                val text = bypass.refusalText(guard)
+                Log.i(TAG, "bypass refused: $text")
+                // Nothing is being charged without the cable, so there is nothing to warn
+                // about every time a game is opened away from the socket.
+                if (guard.reason == BypassChargeUtils.GUARD_NOT_PLUGGED) return
+                if (text == lastNotice) return
+                lastNotice = text
+                Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+            }
+            else -> {}
+        }
     }
 }

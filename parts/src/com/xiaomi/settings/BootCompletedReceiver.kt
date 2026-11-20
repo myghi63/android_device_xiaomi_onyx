@@ -12,6 +12,7 @@ import android.hardware.display.DisplayManager
 import android.util.Log
 import android.view.Display
 import android.view.Display.HdrCapabilities
+import com.xiaomi.settings.charge.BypassChargeUtils
 import com.xiaomi.settings.display.ColorService
 import com.xiaomi.settings.thermal.ThermalUtils
 
@@ -38,6 +39,9 @@ class BootCompletedReceiver : BroadcastReceiver() {
     }
 
     private fun onBootCompleted(context: Context) {
+        // The forced bypass is a request for the current session only: it must not
+        // survive a reboot.
+        BypassChargeUtils.getInstance(context).clearAlwaysRequest()
         ThermalUtils.startService(context)
     }
 

@@ -11,6 +11,7 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.provider.Settings
 import android.util.Log
+import com.xiaomi.settings.R
 import java.io.File
 
 /**
@@ -39,6 +40,18 @@ class BypassChargeUtils private constructor(private val context: Context) {
         /** Settings.System switch: bypass charging while a game is in the foreground. */
         const val SETTING_BYPASS_GAMING = "onyx_bypass_gaming"
 
+        /**
+         * Settings.System switch: bypass charging whatever the foreground app is.
+         * Cleared on boot, so it never survives a reboot.
+         */
+        const val SETTING_BYPASS_ALWAYS = "onyx_bypass_always"
+
+        // Reasons reported by guardFailure().
+        const val GUARD_NOT_PLUGGED = 0
+        const val GUARD_HIGH_TEMPERATURE = 1
+        const val GUARD_LOW_BATTERY = 2
+        const val GUARD_NO_BATTERY_STATUS = 3
+
         @Volatile
         private var sInstance: BypassChargeUtils? = null
 
@@ -49,29 +62,45 @@ class BypassChargeUtils private constructor(private val context: Context) {
             }
     }
 
+    /** A guard condition blocking bypass. Reading is deci-degrees C or percent, -1 when unknown. */
+    class Guard(val reason: Int, val reading: Int)
+
+    /** What happened to the charge path. */
+    enum class Outcome { ENABLED, KEPT, RELEASED, REFUSED }
+
+    /** Outcome of [applyFor], with the guard that caused a refusal. */
+    class Decision(val outcome: Outcome, val guard: Guard?)
+
     private var bypassActive = false
 
     fun isSupported(): Boolean = File(CHARGE_ENABLE_NODE).canWrite()
 
     /**
-     * Requests or releases bypass for the current foreground state.
+     * Requests or releases bypass for the current foreground state. The guards are checked
+     * every time, so a bypass that became unsafe meanwhile (battery heating up, cable pulled)
+     * is dropped here instead of waiting for the next app change.
      *
-     * @return whether bypass is active after the call
+     * @param inGame whether the foreground app is in the game list
+     * @return what was done, and why when it was refused
      */
-    fun applyFor(inGame: Boolean): Boolean {
-        val want = inGame && isSettingEnabled()
-        if (want == bypassActive) return bypassActive
-
-        if (want) {
-            unsafeReason()?.let {
-                Log.i(TAG, "Bypass refused: $it")
-                return false
-            }
+    fun applyFor(inGame: Boolean): Decision {
+        val want = isAlwaysEnabled() || (inGame && isSettingEnabled())
+        if (!want) {
+            if (!bypassActive) return Decision(Outcome.KEPT, null)
+            if (!write(CHARGING_VALUE)) return Decision(Outcome.KEPT, null)
+            bypassActive = false
+            return Decision(Outcome.RELEASED, null)
         }
-        if (!write(if (want) BYPASS_VALUE else CHARGING_VALUE)) return bypassActive
 
-        bypassActive = want
-        return bypassActive
+        val guard = guardFailure()
+        if (guard != null) {
+            if (bypassActive && write(CHARGING_VALUE)) bypassActive = false
+            return Decision(Outcome.REFUSED, guard)
+        }
+        if (bypassActive) return Decision(Outcome.KEPT, null)
+        if (!write(BYPASS_VALUE)) return Decision(Outcome.KEPT, null)
+        bypassActive = true
+        return Decision(Outcome.ENABLED, null)
     }
 
     /** Always safe to call: leaves the charge path alone when nothing was requested. */
@@ -85,21 +114,44 @@ class BypassChargeUtils private constructor(private val context: Context) {
         if (!bypassActive) write(CHARGING_VALUE)
     }
 
-    private fun isSettingEnabled(): Boolean =
-        Settings.System.getInt(context.contentResolver, SETTING_BYPASS_GAMING, 0) == 1
+    /** Drops the forced bypass: it is a one-shot request for the current session. */
+    fun clearAlwaysRequest() {
+        Settings.System.putInt(context.contentResolver, SETTING_BYPASS_ALWAYS, 0)
+    }
 
-    private fun unsafeReason(): String? {
+    /** Null when every guard condition is met, the blocking one otherwise. */
+    fun guardFailure(): Guard? {
         val sticky = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-            ?: return "no battery status"
-        if (sticky.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) == 0) return "not plugged in"
+            ?: return Guard(GUARD_NO_BATTERY_STATUS, -1)
+        if (sticky.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) == 0) {
+            return Guard(GUARD_NOT_PLUGGED, -1)
+        }
         val temp = sticky.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)
-        if (temp >= MAX_BATTERY_TEMP) return "battery at ${temp / 10.0f} C"
+        if (temp >= MAX_BATTERY_TEMP) return Guard(GUARD_HIGH_TEMPERATURE, temp)
         // getIntProperty(BATTERY_PROPERTY_CAPACITY) is @SystemApi: it throws for
         // non-platform apps here, so read the level from the same sticky broadcast.
         val level = sticky.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
-        if (level < MIN_BATTERY_CAPACITY) return "battery at $level%"
+        if (level < MIN_BATTERY_CAPACITY) return Guard(GUARD_LOW_BATTERY, level)
         return null
     }
+
+    /** On-screen message explaining a refusal. */
+    fun refusalText(guard: Guard): String = when (guard.reason) {
+        GUARD_HIGH_TEMPERATURE ->
+            context.getString(R.string.bypass_refused_temperature, guard.reading / 10.0f)
+        GUARD_LOW_BATTERY ->
+            context.getString(R.string.bypass_refused_battery, guard.reading)
+        GUARD_NOT_PLUGGED ->
+            context.getString(R.string.bypass_refused_not_plugged)
+        else ->
+            context.getString(R.string.bypass_refused)
+    }
+
+    private fun isSettingEnabled(): Boolean =
+        Settings.System.getInt(context.contentResolver, SETTING_BYPASS_GAMING, 0) == 1
+
+    private fun isAlwaysEnabled(): Boolean =
+        Settings.System.getInt(context.contentResolver, SETTING_BYPASS_ALWAYS, 0) == 1
 
     private fun write(value: String): Boolean = try {
         File(CHARGE_ENABLE_NODE).writeText("$value\n")
