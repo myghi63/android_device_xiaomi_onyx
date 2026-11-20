@@ -59,7 +59,7 @@ class ThermalService : android.app.Service() {
     private val gameListObserver = object : ContentObserver(handler) {
         override fun onChange(selfChange: Boolean) {
             if (destroyed) return
-            // The list decides both the scene and the bypass, so the scene of the app
+            // The list and the thermal switches decide the scene, so the scene of the app
             // already in the foreground must be written again: forget the cached package.
             currentPackage = ""
             scheduleApply()
@@ -121,6 +121,8 @@ class ThermalService : android.app.Service() {
             ThermalUtils.SETTINGS_GAME_LIST,
             ThermalUtils.SETTINGS_GAME_LIST_AUTO,
             ThermalUtils.SETTINGS_GAME_LIST_EXCLUDED,
+            ThermalUtils.SETTINGS_THERMAL_GAMING,
+            ThermalUtils.SETTINGS_THERMAL_ALWAYS,
         )) {
             contentResolver.registerContentObserver(
                 Settings.System.getUriFor(key), false, gameListObserver,

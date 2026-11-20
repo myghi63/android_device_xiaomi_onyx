@@ -17,6 +17,14 @@
     <string name="bypass_now_title">Bypass now</string>
     <!-- Explanation of the forced bypass switch -->
     <string name="bypass_now_summary">Enable bypass charging even when no app from the game list is running. Same conditions: plugged in, below 45 °C and above 20 %. Switches itself off after a reboot.</string>
+    <!-- Switch label: apply the gaming thermal scene to the game list -->
+    <string name="thermal_gaming_title">Gaming thermal profile</string>
+    <!-- Explanation of the gaming thermal profile switch -->
+    <string name="thermal_gaming_summary">Apply the gaming thermal scene while an app from the game list is in the foreground. The scene also caps the charging current when the battery warms up: switch it off to keep the default scene while gaming, for example together with bypass charging.</string>
+    <!-- Switch label: force the gaming thermal scene whatever the foreground app is -->
+    <string name="thermal_now_title">Gaming thermal profile now</string>
+    <!-- Explanation of the forced gaming thermal scene switch -->
+    <string name="thermal_now_summary">Apply the gaming thermal scene even when no app from the game list is running. Switches itself off after a reboot.</string>
     <!-- Notice shown when bypass charging becomes active -->
     <string name="bypass_enabled_notice">Bypass charging enabled</string>
     <!-- Notice shown when bypass charging is refused, reason unknown -->

@@ -42,6 +42,8 @@ class BootCompletedReceiver : BroadcastReceiver() {
         // The forced bypass is a request for the current session only: it must not
         // survive a reboot.
         BypassChargeUtils.getInstance(context).clearAlwaysRequest()
+        // Same for the forced thermal scene.
+        ThermalUtils.getInstance(context).clearAlwaysProfile()
         ThermalUtils.startService(context)
     }
 

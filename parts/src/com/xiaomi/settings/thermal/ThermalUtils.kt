@@ -37,6 +37,15 @@ class ThermalUtils private constructor(private val context: Context) {
         /** Switch that lets apps declaring FLAG_IS_GAME join the list automatically. Default on. */
         const val SETTINGS_GAME_LIST_AUTO = "onyx_game_list_auto"
 
+        /** Switch that applies the gaming scene to the game list. Default on. */
+        const val SETTINGS_THERMAL_GAMING = "onyx_thermal_gaming"
+
+        /**
+         * Switch that applies the gaming scene whatever the foreground app is.
+         * Cleared on boot, so it never survives a reboot.
+         */
+        const val SETTINGS_THERMAL_ALWAYS = "onyx_thermal_always"
+
         const val SCENE_DEFAULT = 19  // MGAME, boot default (keeps fast charging)
         const val SCENE_PHONE = 5
         const val SCENE_CAMERA = 15
@@ -78,12 +87,14 @@ class ThermalUtils private constructor(private val context: Context) {
     fun writeSceneFor(packageName: String): Boolean = writeScene(sceneFor(packageName))
 
     private fun sceneFor(packageName: String): Int {
+        if (isThermalAlwaysEnabled()) return SCENE_GAMING
+
         if (packageName.isEmpty()) return SCENE_DEFAULT
 
         if (isDefaultDialer(packageName)) return SCENE_PHONE
 
         if (isCameraApp(packageName)) return SCENE_CAMERA
-        if (isGame(packageName)) return SCENE_GAMING
+        if (isGame(packageName) && isGamingProfileEnabled()) return SCENE_GAMING
 
         return SCENE_DEFAULT
     }
@@ -133,6 +144,19 @@ class ThermalUtils private constructor(private val context: Context) {
 
     fun isAutoGameEnabled(): Boolean =
         Settings.System.getInt(context.contentResolver, SETTINGS_GAME_LIST_AUTO, 1) == 1
+
+    /** Whether the gaming scene follows the game list. Default on. */
+    fun isGamingProfileEnabled(): Boolean =
+        Settings.System.getInt(context.contentResolver, SETTINGS_THERMAL_GAMING, 1) == 1
+
+    /** Whether the gaming scene is forced whatever the foreground app is. */
+    fun isThermalAlwaysEnabled(): Boolean =
+        Settings.System.getInt(context.contentResolver, SETTINGS_THERMAL_ALWAYS, 0) == 1
+
+    /** Drops the forced scene: it is a one-shot request for the current session. */
+    fun clearAlwaysProfile() {
+        Settings.System.putInt(context.contentResolver, SETTINGS_THERMAL_ALWAYS, 0)
+    }
 
     fun addGame(packageName: String) {
         writePackages(SETTINGS_GAME_LIST, gameList() + packageName)

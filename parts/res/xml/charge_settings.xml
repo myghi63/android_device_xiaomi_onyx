@@ -10,6 +10,11 @@
         android:title="@string/bypass_gaming_title"
         android:summary="@string/bypass_gaming_summary" />
 
+    <SwitchPreference
+        android:key="onyx_thermal_gaming"
+        android:title="@string/thermal_gaming_title"
+        android:summary="@string/thermal_gaming_summary" />
+
     <Preference
         android:key="onyx_game_list_page"
         android:title="@string/game_list_title"
@@ -19,5 +24,10 @@
         android:key="onyx_bypass_always"
         android:title="@string/bypass_now_title"
         android:summary="@string/bypass_now_summary" />
+
+    <SwitchPreference
+        android:key="onyx_thermal_always"
+        android:title="@string/thermal_now_title"
+        android:summary="@string/thermal_now_summary" />
 
 </PreferenceScreen>
