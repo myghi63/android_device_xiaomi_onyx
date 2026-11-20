@@ -167,6 +167,36 @@
             "ResetOnInit": true
         },
         {
+            "Name": "sysDevicesSystemCpuCpu7WaltAdaptiveLevel1",
+            "Path": "/sys/devices/system/cpu/cpu7/cpufreq/walt/adaptive_level_1",
+            "Values": [
+                "0",
+                "2400000"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpu7WaltAdaptiveLowFreq",
+            "Path": "/sys/devices/system/cpu/cpu7/cpufreq/walt/adaptive_low_freq",
+            "Values": [
+                "0",
+                "2841600"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpu7WaltAdaptiveHighFreq",
+            "Path": "/sys/devices/system/cpu/cpu7/cpufreq/walt/adaptive_high_freq",
+            "Values": [
+                "0",
+                "3014400"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
             "Name": "sysDevicesSystemCpuBusDcvsLlcc240b7400QcomBwmonLlccSampleMs",
             "Path": "/sys/devices/system/cpu/bus_dcvs/LLCC/240b7400.qcom,bwmon-llcc/sample_ms",
             "Values": [
@@ -472,6 +502,24 @@
             "Node": "sysDevicesSystemCpuBusDcvsLlcc240b7400QcomBwmonLlccMaxFreq",
             "Value": "933000",
             "Duration": 0
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpu7WaltAdaptiveLevel1",
+            "Value": "2400000",
+            "Duration": 2000
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpu7WaltAdaptiveLowFreq",
+            "Value": "2841600",
+            "Duration": 2000
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "sysDevicesSystemCpuCpu7WaltAdaptiveHighFreq",
+            "Value": "3014400",
+            "Duration": 2000
         },
         {
             "PowerHint": "LAUNCH",
