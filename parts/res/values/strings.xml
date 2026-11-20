@@ -7,8 +7,10 @@
     <!-- App Name -->
     <string name="app_name">Xiaomi Parts</string>
 
-    <!-- Bypass charging (Settings > Battery entry title) -->
-    <string name="bypass_charging_title">Bypass charging</string>
+    <!-- Gaming & charging (Settings > System entry title) -->
+    <string name="gaming_charging_title">Gaming &amp; charging</string>
+    <!-- Summary shown under the entry in Settings > System -->
+    <string name="gaming_charging_summary">The game list, bypass charging and the gaming thermal scene.</string>
     <!-- Switch label in the bypass charging page -->
     <string name="bypass_gaming_title">Bypass while gaming</string>
     <!-- Explanation of what the switch does -->

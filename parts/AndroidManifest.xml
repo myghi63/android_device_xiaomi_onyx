@@ -46,20 +46,26 @@
         <activity
             android:name=".charge.ChargeSettingsActivity"
             android:exported="true"
-            android:label="@string/bypass_charging_title"
+            android:label="@string/gaming_charging_title"
             android:theme="@android:style/Theme.DeviceDefault.Settings">
             <intent-filter>
                 <action android:name="com.android.settings.action.IA_SETTINGS" />
             </intent-filter>
             <meta-data
                 android:name="com.android.settings.category"
-                android:value="com.android.settings.category.ia.battery" />
+                android:value="com.android.settings.category.ia.system" />
             <meta-data
                 android:name="com.android.settings.icon"
                 android:resource="@drawable/ic_charge_bypass" />
             <meta-data
                 android:name="com.android.settings.order"
                 android:value="-1000" />
+            <meta-data
+                android:name="com.android.settings.profile"
+                android:value="primary_profile_only" />
+            <meta-data
+                android:name="com.android.settings.summary"
+                android:resource="@string/gaming_charging_summary" />
         </activity>
 
         <activity
