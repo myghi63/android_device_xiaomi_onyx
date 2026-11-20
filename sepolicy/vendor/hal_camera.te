@@ -31,6 +31,9 @@ allow hal_camera_default vendor_displayfeature_device:chr_file { ioctl open read
 # AlgoFwkThd* threads read the GPU devfreq link and the DSI panel node for perf tuning
 allow hal_camera_default vendor_sysfs_kgsl:lnk_file read;
 allow hal_camera_default vendor_sysfs_displayfeature:dir search;
+# The provider reads disp-DSI-*/panel_build_id through the dir above (same grants as
+# the citsensorservice line on this node).
+allow hal_camera_default vendor_sysfs_displayfeature:file { getattr open read };
 
 # The stock HEIF path muxes into a memfd named "HEIF-<n>-<ts>-F" (unlabeled, so
 # tmpfs:s0) handed over by the camera app; without this the muxer writes nothing
