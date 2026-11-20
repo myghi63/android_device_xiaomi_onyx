@@ -47,6 +47,9 @@ class ThermalService : android.app.Service() {
 
     private val settingsObserver = object : ContentObserver(handler) {
         override fun onChange(selfChange: Boolean) {
+            // A toggle is an explicit request: it always confirms once, even when the
+            // foreground app did not change.
+            lastNotice = ""
             // Re-query foreground instead of trusting the cached package,
             // which is empty after a service restart.
             if (!destroyed && interactive()) scheduleApply()
@@ -209,7 +212,7 @@ class ThermalService : android.app.Service() {
         when (decision.outcome) {
             BypassChargeUtils.Outcome.ENABLED -> {
                 Log.i(TAG, "bypass enabled")
-                Toast.makeText(this, R.string.bypass_enabled_notice, Toast.LENGTH_LONG).show()
+                notice(getString(R.string.bypass_enabled_notice))
             }
             BypassChargeUtils.Outcome.REFUSED -> {
                 val guard = decision.guard ?: return
@@ -218,11 +221,18 @@ class ThermalService : android.app.Service() {
                 // Nothing is being charged without the cable, so there is nothing to warn
                 // about every time a game is opened away from the socket.
                 if (guard.reason == BypassChargeUtils.GUARD_NOT_PLUGGED) return
-                if (text == lastNotice) return
-                lastNotice = text
-                Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+                notice(text)
             }
             else -> {}
         }
+    }
+
+    // The bypass is requested again whenever the screen comes back on, so a notice is shown
+    // once per text and per foreground app: lastNotice is cleared when another app comes to
+    // the foreground and when a switch is changed.
+    private fun notice(text: String) {
+        if (text == lastNotice) return
+        lastNotice = text
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
     }
 }
