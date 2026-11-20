@@ -34,7 +34,6 @@ class BypassChargeUtils private constructor(private val context: Context) {
         private const val CHARGING_VALUE = "$CLIENT buck 1"
 
         // Refuse bypass in conditions where it would hurt rather than help.
-        private const val MAX_BATTERY_TEMP = 450 // deci-degrees C
         private const val MIN_BATTERY_CAPACITY = 20 // percent
 
         /** Settings.System switch: bypass charging while a game is in the foreground. On by default. */
@@ -48,9 +47,8 @@ class BypassChargeUtils private constructor(private val context: Context) {
 
         // Reasons reported by guardFailure().
         const val GUARD_NOT_PLUGGED = 0
-        const val GUARD_HIGH_TEMPERATURE = 1
-        const val GUARD_LOW_BATTERY = 2
-        const val GUARD_NO_BATTERY_STATUS = 3
+        const val GUARD_LOW_BATTERY = 1
+        const val GUARD_NO_BATTERY_STATUS = 2
 
         @Volatile
         private var sInstance: BypassChargeUtils? = null
@@ -62,7 +60,7 @@ class BypassChargeUtils private constructor(private val context: Context) {
             }
     }
 
-    /** A guard condition blocking bypass. Reading is deci-degrees C or percent, -1 when unknown. */
+    /** A guard condition blocking bypass. Reading is percent, -1 when unknown. */
     class Guard(val reason: Int, val reading: Int)
 
     /** What happened to the charge path. */
@@ -77,7 +75,7 @@ class BypassChargeUtils private constructor(private val context: Context) {
 
     /**
      * Requests or releases bypass for the current foreground state. The guards are checked
-     * every time, so a bypass that became unsafe meanwhile (battery heating up, cable pulled)
+     * every time, so a bypass that became unsafe meanwhile (cable pulled, battery too low)
      * is dropped here instead of waiting for the next app change.
      *
      * @param inGame whether the foreground app is in the game list
@@ -126,8 +124,6 @@ class BypassChargeUtils private constructor(private val context: Context) {
         if (sticky.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) == 0) {
             return Guard(GUARD_NOT_PLUGGED, -1)
         }
-        val temp = sticky.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0)
-        if (temp >= MAX_BATTERY_TEMP) return Guard(GUARD_HIGH_TEMPERATURE, temp)
         // getIntProperty(BATTERY_PROPERTY_CAPACITY) is @SystemApi: it throws for
         // non-platform apps here, so read the level from the same sticky broadcast.
         val level = sticky.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
@@ -137,8 +133,6 @@ class BypassChargeUtils private constructor(private val context: Context) {
 
     /** On-screen message explaining a refusal. */
     fun refusalText(guard: Guard): String = when (guard.reason) {
-        GUARD_HIGH_TEMPERATURE ->
-            context.getString(R.string.bypass_refused_temperature, guard.reading / 10.0f)
         GUARD_LOW_BATTERY ->
             context.getString(R.string.bypass_refused_battery, guard.reading)
         GUARD_NOT_PLUGGED ->

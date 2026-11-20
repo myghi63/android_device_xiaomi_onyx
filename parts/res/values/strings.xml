@@ -12,11 +12,11 @@
     <!-- Switch label in the bypass charging page -->
     <string name="bypass_gaming_title">Bypass while gaming</string>
     <!-- Explanation of what the switch does -->
-    <string name="bypass_gaming_summary">Enabled by default. While an app from the game list is in the foreground, the adapter powers the device directly and the battery stops charging. Needs the device plugged in; refused above 45 °C or below 20 %.</string>
+    <string name="bypass_gaming_summary">Enabled by default. While an app from the game list is in the foreground, the adapter powers the device directly and the battery stops charging. Needs the device plugged in; refused below 20 %.</string>
     <!-- Switch label: force bypass whatever the foreground app is -->
     <string name="bypass_now_title">Bypass now</string>
     <!-- Explanation of the forced bypass switch -->
-    <string name="bypass_now_summary">Enable bypass charging even when no app from the game list is running. Same conditions: plugged in, below 45 °C and above 20 %. Switches itself off after a reboot.</string>
+    <string name="bypass_now_summary">Enable bypass charging even when no app from the game list is running. Same conditions: plugged in and above 20 %. Switches itself off after a reboot.</string>
     <!-- Switch label: apply the gaming thermal scene to the game list -->
     <string name="thermal_gaming_title">Gaming thermal profile</string>
     <!-- Explanation of the gaming thermal profile switch -->
@@ -31,8 +31,6 @@
     <string name="bypass_refused">Bypass charging not enabled</string>
     <!-- Notice shown when bypass charging is refused: no adapter connected -->
     <string name="bypass_refused_not_plugged">Bypass charging not enabled: the device is not plugged in</string>
-    <!-- Notice shown when bypass charging is refused: battery too hot -->
-    <string name="bypass_refused_temperature">Bypass charging not enabled: battery at %1$.1f °C (limit 45 °C)</string>
     <!-- Notice shown when bypass charging is refused: battery too low -->
     <string name="bypass_refused_battery">Bypass charging not enabled: battery at %1$d%% (minimum 20%%)</string>
 
