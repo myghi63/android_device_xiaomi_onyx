@@ -334,6 +334,46 @@
             "ResetOnInit": true
         },
         {
+            "Name": "sysDevicesSystemCpuCpu2CoreCtlOfflineDelayMs",
+            "Path": "/sys/devices/system/cpu/cpu2/core_ctl/offline_delay_ms",
+            "Values": [
+                "100",
+                "15"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpu5CoreCtlOfflineDelayMs",
+            "Path": "/sys/devices/system/cpu/cpu5/core_ctl/offline_delay_ms",
+            "Values": [
+                "100",
+                "15"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpu7CoreCtlOfflineDelayMs",
+            "Path": "/sys/devices/system/cpu/cpu7/core_ctl/offline_delay_ms",
+            "Values": [
+                "100",
+                "15"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpu2CoreCtlMinCpus",
+            "Path": "/sys/devices/system/cpu/cpu2/core_ctl/min_cpus",
+            "Values": [
+                "1",
+                "2"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
             "Name": "sysDevicesSystemCpuCpu2CpufreqWaltRtgBoostFreq",
             "Path": "/sys/devices/system/cpu/cpu2/cpufreq/walt/rtg_boost_freq",
             "Values": [
@@ -546,6 +586,30 @@
             "PowerHint": "INTERACTIVE",
             "Node": "sysDevicesSystemCpuCpu7CpufreqScalingMinFreq",
             "Value": "940800",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "DISPLAY_INACTIVE",
+            "Node": "sysDevicesSystemCpuCpu2CoreCtlOfflineDelayMs",
+            "Value": "15",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "DISPLAY_INACTIVE",
+            "Node": "sysDevicesSystemCpuCpu5CoreCtlOfflineDelayMs",
+            "Value": "15",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "DISPLAY_INACTIVE",
+            "Node": "sysDevicesSystemCpuCpu7CoreCtlOfflineDelayMs",
+            "Value": "15",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "DISPLAY_INACTIVE",
+            "Node": "sysDevicesSystemCpuCpu2CoreCtlMinCpus",
+            "Value": "2",
             "Duration": 0
         },
         {
