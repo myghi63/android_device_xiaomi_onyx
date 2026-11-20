@@ -73,6 +73,8 @@ class ThermalService : android.app.Service() {
                     currentPackage = ""
                     utils.writeDefault()
                     bypass.release()
+                    // With the screen off the level can rise in peace; SCREEN_ON re-evaluates.
+                    watchBatteryLevel(false)
                 }
                 Intent.ACTION_SCREEN_ON -> {
                     scheduleApply()
@@ -92,6 +94,14 @@ class ThermalService : android.app.Service() {
             scheduleApply()
         }
     }
+
+    private val batteryReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            // A level crossing arrives here: re-evaluate the low battery guard.
+            if (!destroyed) scheduleApply()
+        }
+    }
+    private var batteryWatchRegistered = false
 
     override fun onCreate() {
         super.onCreate()
@@ -151,6 +161,7 @@ class ThermalService : android.app.Service() {
         } catch (e: RuntimeException) {
             Log.w(TAG, "Cannot unregister receiver", e)
         }
+        watchBatteryLevel(false)
         try {
             ActivityTaskManager.getService().unregisterTaskStackListener(taskListener)
         } catch (e: Exception) {
@@ -164,6 +175,20 @@ class ThermalService : android.app.Service() {
     private fun scheduleApply() {
         handler.removeCallbacks(applyRunnable)
         handler.postDelayed(applyRunnable, 150)
+    }
+
+    private fun watchBatteryLevel(watch: Boolean) {
+        if (watch && !batteryWatchRegistered) {
+            registerReceiver(
+                batteryReceiver,
+                IntentFilter(Intent.ACTION_BATTERY_CHANGED),
+                Context.RECEIVER_NOT_EXPORTED,
+            )
+            batteryWatchRegistered = true
+        } else if (!watch && batteryWatchRegistered) {
+            unregisterReceiver(batteryReceiver)
+            batteryWatchRegistered = false
+        }
     }
 
     private fun applyScene() {
@@ -211,6 +236,13 @@ class ThermalService : android.app.Service() {
 
     private fun applyBypass(inGame: Boolean) {
         val decision = bypass.applyFor(inGame)
+        // The low battery guard is the only one that resolves by itself: charging brings
+        // the level up. Watch the battery broadcast only while such a refusal is standing,
+        // so the bypass comes back on its own when the level crosses the minimum.
+        watchBatteryLevel(
+            decision.outcome == BypassChargeUtils.Outcome.REFUSED &&
+                decision.guard?.reason == BypassChargeUtils.GUARD_LOW_BATTERY,
+        )
         when (decision.outcome) {
             BypassChargeUtils.Outcome.ENABLED -> {
                 Log.i(TAG, "bypass enabled")
