@@ -10,4 +10,14 @@
         android:title="@string/bypass_gaming_title"
         android:summary="@string/bypass_gaming_summary" />
 
+    <Preference
+        android:key="onyx_game_list_page"
+        android:title="@string/game_list_title"
+        android:summary="@string/game_list_summary" />
+
+    <SwitchPreference
+        android:key="onyx_bypass_always"
+        android:title="@string/bypass_now_title"
+        android:summary="@string/bypass_now_summary" />
+
 </PreferenceScreen>
