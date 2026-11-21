@@ -5,6 +5,7 @@ type hal_touchfeature_xiaomi_service, hal_service_type, protected_service, servi
 binder_call(hal_touchfeature_xiaomi_default, system_server)
 binder_use(hal_touchfeature_xiaomi_server)
 hal_server_domain(hal_touchfeature_xiaomi_default, hal_touchfeature_xiaomi)
+hal_client_domain(system_server, hal_touchfeature_xiaomi)
 init_daemon_domain(hal_touchfeature_xiaomi_default)
 unix_socket_connect(hal_touchfeature_xiaomi_default, property, touchreport)
 unix_socket_connect(hal_touchfeature_xiaomi_default, property, tpevent)

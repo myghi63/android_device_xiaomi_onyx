@@ -524,3 +524,8 @@ PRODUCT_PACKAGES += \
 # (MCA charge_enable client arbitration) exists on this device.
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.battery_bypass_supported=true
+
+# Shows the GameBar touch boost tile: the touchfeature HAL (ITouchFeature)
+# drives the NT36532 sampling knobs on this device.
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.ax_touch_boost=true
