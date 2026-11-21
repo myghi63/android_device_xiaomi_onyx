@@ -8,37 +8,30 @@ typeattribute gamespace_app mlstrustedsubject;
 
 app_domain(gamespace_app)
 
-# Foreground detection (TaskStackListener + focusedRootTaskInfo) and the
-# settings pages' UI. GameManager needs no find rule: GameManagerService is
-# not a service_manager service in policy at all (same as upstream crDroid,
-# which ships GameSpace with zero sepolicy additions).
-allow gamespace_app activity_service:service_manager find;
-allow gamespace_app activity_task_service:service_manager find;
-allow gamespace_app audio_service:service_manager find;
-allow gamespace_app gpu_service:service_manager find;
-allow gamespace_app netstats_service:service_manager find;
-
-# Notices (Toast) go through the notification service, and the toast path resolves
-# the display through the display service.
-allow gamespace_app notification_service:service_manager find;
-allow gamespace_app display_service:service_manager find;
-
-# The screen state comes from PowerManager, whose lookup resolves both the power and
-# the thermal service. Without them the lookup yields null and neither the game scene
-# nor the bypass request is ever applied.
-allow gamespace_app power_service:service_manager find;
-allow gamespace_app thermal_service:service_manager find;
-
-# Service lookups every UI process makes: ActivityThread/ViewRootImpl resolve these
-# when an activity is created, and a denied find just nulls the manager behind it.
-allow gamespace_app app_function_service:service_manager find;
-allow gamespace_app autofill_service:service_manager find;
-allow gamespace_app content_capture_service:service_manager find;
-allow gamespace_app hint_service:service_manager find;
-allow gamespace_app protolog_configuration_service:service_manager find;
-allow gamespace_app sensitive_content_protection_service:service_manager find;
-allow gamespace_app uimode_service:service_manager find;
-allow gamespace_app voiceinteraction_service:service_manager find;
+# Service lookups. GameSpace (and the vendored axion platform client) reach a
+# wide set of system services; upstream crDroid gets these implicitly because
+# GameSpace runs as system_app, which carries the blanket find rule in
+# private/system_app.te. Mirror exactly that rule so a denied find can never
+# crash-loop the session service (a uid-system crash loop triggers RescueParty
+# and reboots the phone).
+allow gamespace_app servicemanager:service_manager list;
+allow gamespace_app {
+  service_manager_type
+  -apex_service
+  -dnsresolver_service
+  -dumpstate_service
+  -installd_service
+  -lpdump_service
+  -mdns_service
+  -netd_service
+  -system_suspend_control_internal_service
+  -system_suspend_control_service
+  -tracingproxy_service
+  -virtual_touchpad_service
+  -vold_service
+  -default_android_service
+  -virtualization_maintenance_service
+}:service_manager find;
 
 allow gamespace_app system_app_data_file:dir create_dir_perms;
 allow gamespace_app system_app_data_file:file create_file_perms;
