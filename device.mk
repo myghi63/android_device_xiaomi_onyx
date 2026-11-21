@@ -515,3 +515,18 @@ PRODUCT_COPY_FILES += \
 
 # Vendor
 $(call inherit-product, vendor/xiaomi/onyx/onyx-vendor.mk)
+
+# GameSpace: game overlay, per-app game modes, thermal scenes, bypass charging.
+PRODUCT_PACKAGES += \
+    GameSpace
+
+# Makes GameSpace's settings page show the bypass charging switch: the backend
+# (MCA charge_enable client arbitration) exists on this device.
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.battery_bypass_supported=true
+
+# The thermal/bypass engine now lives in GameSpace: silence the legacy
+# OnyxBypass watcher so a single service owns sconfig and the charge node
+# while that app's tiles and settings keys stay shared.
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.onyx.thermal.auto=false
