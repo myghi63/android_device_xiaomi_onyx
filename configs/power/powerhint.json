@@ -888,6 +888,72 @@
             "Node": "devCpuctlForegroundCpuUclampMin",
             "Value": "30",
             "Duration": 0
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "procSysWaltSchedBoost",
+            "Value": "1",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpu7WaltAdaptiveLevel1",
+            "Value": "2400000",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpu7WaltAdaptiveLowFreq",
+            "Value": "2841600",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpu7WaltAdaptiveHighFreq",
+            "Value": "3014400",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLowFreq",
+            "Value": "940800",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLevel1",
+            "Value": "1516800",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveHighFreq",
+            "Value": "2208000",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy5WaltAdaptiveLowFreq",
+            "Value": "1516800",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy5WaltAdaptiveLevel1",
+            "Value": "1190400",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy5WaltAdaptiveHighFreq",
+            "Value": "1728000",
+            "Duration": 4000
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "sysDevicesClassKgslKgsl3d0DevfreqMinFreq",
+            "Value": "644000000",
+            "Duration": 4000
         }
     ]
 }
