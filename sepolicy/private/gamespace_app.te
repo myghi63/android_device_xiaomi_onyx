@@ -10,27 +10,46 @@ app_domain(gamespace_app)
 
 # Service lookups. GameSpace (and the vendored axion platform client) reach a
 # wide set of system services; upstream crDroid gets these implicitly because
-# GameSpace runs as system_app, which carries the blanket find rule in
-# private/system_app.te. Mirror exactly that rule so a denied find can never
-# crash-loop the session service (a uid-system crash loop triggers RescueParty
-# and reboots the phone).
+# GameSpace runs as system_app. system_app's blanket find cannot be mirrored
+# here: service_manager_type covers every HAL, and each HAL has a neverallow
+# only registered client domains satisfy - the blanket cost 144 neverallow
+# failures. Carry an explicit list instead: the rules that already worked in
+# the field plus the services proven by the enforced and permissive test runs
+# (wifi, bluetooth_manager, tethering, netpolicy, nfc, color_display, game,
+# radio, telephony.registry, sensor_privacy, vibrator_manager, deviceidle).
+# color_display is load-bearing: its lookup throws, and a crash-looping
+# uid-system service triggers RescueParty and reboots the phone.
 allow gamespace_app servicemanager:service_manager list;
 allow gamespace_app {
-  service_manager_type
-  -apex_service
-  -dnsresolver_service
-  -dumpstate_service
-  -installd_service
-  -lpdump_service
-  -mdns_service
-  -netd_service
-  -system_suspend_control_internal_service
-  -system_suspend_control_service
-  -tracingproxy_service
-  -virtual_touchpad_service
-  -vold_service
-  -default_android_service
-  -virtualization_maintenance_service
+  activity_service
+  activity_task_service
+  app_function_service
+  audio_service
+  autofill_service
+  bluetooth_manager_service
+  color_display_service
+  content_capture_service
+  deviceidle_service
+  display_service
+  game_service
+  gpu_service
+  hint_service
+  netpolicy_service
+  netstats_service
+  nfc_service
+  notification_service
+  power_service
+  protolog_configuration_service
+  radio_service
+  registry_service
+  sensor_privacy_service
+  sensitive_content_protection_service
+  tethering_service
+  thermal_service
+  uimode_service
+  vibrator_manager_service
+  voiceinteraction_service
+  wifi_service
 }:service_manager find;
 
 allow gamespace_app system_app_data_file:dir create_dir_perms;
