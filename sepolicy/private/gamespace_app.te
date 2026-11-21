@@ -37,6 +37,16 @@ allow gamespace_app system_app_data_file:dir create_dir_perms;
 allow gamespace_app system_app_data_file:file create_file_perms;
 allow gamespace_app system_app_data_file:lnk_file create_file_perms;
 
+# Cgroup migration: libcutils set_sched_policy/set_cpuset_policy writes
+# /dev/cpuctl/* and /dev/cpuset/* from the app process itself (framework
+# scheduling, not GameSpace code). domain.te excludes appdomain from the
+# generic cgroup rules, so carry the private/system_app.te set plus the v1
+# dir search those paths need.
+allow gamespace_app cgroup:dir r_dir_perms;
+allow gamespace_app cgroup:file w_file_perms;
+allow gamespace_app cgroup_v2:file w_file_perms;
+allow gamespace_app cgroup_v2:dir w_dir_perms;
+
 # Thermal scenes: write sconfig (/sys/devices/virtual/thermal/...)
 allow gamespace_app sysfs_thermal:dir r_dir_perms;
 allow gamespace_app sysfs_thermal:file w_file_perms;
