@@ -1,2 +1,7 @@
 # Parts
 user=system seinfo=platform isPrivApp=true name=com.xiaomi.settings domain=parts_app type=system_app_data_file levelFrom=all
+
+# GameSpace engine (privileged, uid system): dedicated domain so the thermal
+# and charging node carve-outs apply to it alone, same pattern as parts_app
+# and the onyx_bypass_app it absorbs.
+user=system seinfo=platform isPrivApp=true name=io.chaldeaprjkt.gamespace domain=gamespace_app type=system_app_data_file levelFrom=all
