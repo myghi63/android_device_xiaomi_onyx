@@ -7,6 +7,15 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
+# The stock camera add-on (MiuiCamera) replaces Lineage's camera app. Lineage's
+# config skips Aperture when PRODUCT_NO_CAMERA is set, and evaluates the flag while
+# inheriting vendor/lineage, so it must be decided before that: the wildcard checks
+# whether the add-on device tree is actually synced. Without the add-on repos in the
+# manifest, Aperture is still built.
+ifneq ($(wildcard device/xiaomi/onyx-miuicamera/device.mk),)
+PRODUCT_NO_CAMERA := true
+endif
+
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
