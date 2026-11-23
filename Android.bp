@@ -1,6 +1,5 @@
 soong_namespace {
     imports: [
-        "external/vanadium",
         "hardware/google/interfaces",
         "hardware/google/pixel/pixelstats",
         "hardware/google/pixel/power-libperfmgr",

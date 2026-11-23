@@ -24,6 +24,7 @@ $(call inherit-product, device/xiaomi/onyx/device.mk)
 
 # Optional add-on repos (no-op when absent).
 $(call inherit-product-if-exists, vendor/pocketlock/pocket.mk)
+$(call inherit-product-if-exists, vendor/vanadium_pack/vanadium_pack.mk)
 $(call inherit-product-if-exists, device/xiaomi/onyx-miuicamera/device.mk)
 
 PRODUCT_NAME := lineage_onyx
