@@ -1,4 +1,4 @@
-From cd5f6f3c5df4fa8632f0aa1df9c516f4989701b2 Mon Sep 17 00:00:00 2001
+From 2934bfde91dc20d5e10620fd1bcabc0ed98301aa Mon Sep 17 00:00:00 2001
 From: Myghi63 <myghi63@disroot.org>
 Date: Sun, 22 Nov 2026 16:24:19 -0300
 Subject: [PATCH] SystemUI: Order brightness slider actions to stop the drag
@@ -20,13 +20,13 @@ Change-Id: I2b97ff85accf67d74a91c5bd4875645385e308d9
 ---
  .../BrightnessSliderIntentOrderTest.kt        | 148 +++++++++++++
  .../BrightnessSliderMirrorTouchTest.kt        | 203 ++++++++++++++++++
- ...creenBrightnessDisplayManagerRepository.kt |  33 ++-
- ...nBrightnessDisplayManagerRepositoryTest.kt | 105 +++++++++
+ ...creenBrightnessDisplayManagerRepository.kt |  35 ++-
+ ...nBrightnessDisplayManagerRepositoryTest.kt | 104 +++++++++
  .../brightness/ui/compose/BrightnessSlider.kt |   9 +-
  .../ui/viewmodel/BrightnessSliderViewModel.kt |  33 +++
  .../qs/composefragment/QSFragmentCompose.kt   |  31 ++-
  .../viewmodel/QSFragmentComposeViewModel.kt   |   4 +-
- 8 files changed, 544 insertions(+), 22 deletions(-)
+ 8 files changed, 544 insertions(+), 23 deletions(-)
  create mode 100644 packages/SystemUI/multivalentTests/src/com/android/systemui/brightness/ui/viewmodel/BrightnessSliderIntentOrderTest.kt
  create mode 100644 packages/SystemUI/multivalentTests/src/com/android/systemui/brightness/ui/viewmodel/BrightnessSliderMirrorTouchTest.kt
 
@@ -394,10 +394,10 @@ index 000000000000..22e86b88fcbf
 +    }
 +}
 diff --git a/packages/SystemUI/pods/brightness/src/main/data/repository/ScreenBrightnessDisplayManagerRepository.kt b/packages/SystemUI/pods/brightness/src/main/data/repository/ScreenBrightnessDisplayManagerRepository.kt
-index 3719994e7de2..cfcd9f54b735 100644
+index 58bf92efe480..e76b68369bfc 100644
 --- a/packages/SystemUI/pods/brightness/src/main/data/repository/ScreenBrightnessDisplayManagerRepository.kt
 +++ b/packages/SystemUI/pods/brightness/src/main/data/repository/ScreenBrightnessDisplayManagerRepository.kt
-@@ -66,22 +66,27 @@ constructor(
+@@ -69,23 +69,28 @@ constructor(
      @Application private val context: Context,
  ) : ScreenBrightnessRepository {
  
@@ -409,22 +409,24 @@ index 3719994e7de2..cfcd9f54b735 100644
              for (call in apiQueue) {
 -                val bounds = getMinMaxLinearBrightness()
 -                val value = call.value.clamp(bounds.first, bounds.second).floatValue
+-                val targetDisplayId = displayId.value
                  when (call) {
 -                    is SetBrightnessMethod.Temporary -> {
--                        displayManager.setTemporaryBrightness(displayId, value)
+-                        displayManager.setTemporaryBrightness(targetDisplayId, value)
 -                    }
 -                    is SetBrightnessMethod.Permanent -> {
--                        displayManager.setBrightness(displayId, value)
+-                        displayManager.setBrightness(targetDisplayId, value)
 +                    ToggleBrightnessMode -> toggleBrightnessModeInternal()
 +                    is SetBrightnessMethod -> {
 +                        val bounds = getMinMaxLinearBrightness()
 +                        val value = call.value.clamp(bounds.first, bounds.second).floatValue
++                        val targetDisplayId = displayId.value
 +                        when (call) {
 +                            is SetBrightnessMethod.Temporary -> {
-+                                displayManager.setTemporaryBrightness(displayId, value)
++                                displayManager.setTemporaryBrightness(targetDisplayId, value)
 +                            }
 +                            is SetBrightnessMethod.Permanent -> {
-+                                displayManager.setBrightness(displayId, value)
++                                displayManager.setBrightness(targetDisplayId, value)
 +                            }
 +                        }
 +                        logBrightnessChange(call is SetBrightnessMethod.Permanent, value)
@@ -434,7 +436,7 @@ index 3719994e7de2..cfcd9f54b735 100644
              }
          }
      }
-@@ -194,6 +199,10 @@ constructor(
+@@ -200,6 +205,10 @@ constructor(
      }
  
      override fun toggleBrightnessMode() {
@@ -445,7 +447,7 @@ index 3719994e7de2..cfcd9f54b735 100644
          val enabled = isAutoBrightnessEnabled()
          Settings.System.putIntForUser(
              context.contentResolver,
-@@ -204,7 +213,11 @@ constructor(
+@@ -210,7 +219,11 @@ constructor(
          )
      }
  
@@ -459,7 +461,7 @@ index 3719994e7de2..cfcd9f54b735 100644
  
          @JvmInline
 diff --git a/packages/SystemUI/pods/brightness/src/test/data/repository/ScreenBrightnessDisplayManagerRepositoryTest.kt b/packages/SystemUI/pods/brightness/src/test/data/repository/ScreenBrightnessDisplayManagerRepositoryTest.kt
-index 1a67800c02a7..492fab03dafc 100644
+index 6f93d9c7e944..129c60e54848 100644
 --- a/packages/SystemUI/pods/brightness/src/test/data/repository/ScreenBrightnessDisplayManagerRepositoryTest.kt
 +++ b/packages/SystemUI/pods/brightness/src/test/data/repository/ScreenBrightnessDisplayManagerRepositoryTest.kt
 @@ -21,6 +21,8 @@ import android.hardware.display.BrightnessInfo.BRIGHTNESS_MAX_REASON_NONE
@@ -471,7 +473,7 @@ index 1a67800c02a7..492fab03dafc 100644
  import android.view.Display
  import androidx.test.ext.junit.runners.AndroidJUnit4
  import androidx.test.filters.SmallTest
-@@ -48,6 +50,8 @@ import org.mockito.ArgumentMatchers.anyFloat
+@@ -49,6 +51,8 @@ import org.mockito.ArgumentMatchers.anyFloat
  import org.mockito.ArgumentMatchers.anyInt
  import org.mockito.Mock
  import org.mockito.Mockito.never
@@ -480,15 +482,7 @@ index 1a67800c02a7..492fab03dafc 100644
  import org.mockito.Mockito.verify
  import org.mockito.junit.MockitoJUnit
  import org.mockito.junit.MockitoRule
-@@ -78,6 +82,7 @@ class ScreenBrightnessDisplayManagerRepositoryTest : SysuiTestCase() {
-                 logcatTableLogBuffer(kosmos, "screenBrightness"),
-                 kosmos.applicationCoroutineScope,
-                 kosmos.testDispatcher,
-+                context,
-             )
- 
-         whenever(displayManager.getDisplay(displayId)).thenReturn(display)
-@@ -224,6 +229,106 @@ class ScreenBrightnessDisplayManagerRepositoryTest : SysuiTestCase() {
+@@ -254,6 +258,46 @@ class ScreenBrightnessDisplayManagerRepositoryTest : SysuiTestCase() {
              }
          }
  
@@ -532,6 +526,13 @@ index 1a67800c02a7..492fab03dafc 100644
 +            }
 +        }
 +
+     @Test
+     fun setBrightness_followsShadeDisplay() =
+         with(kosmos) {
+@@ -272,6 +316,66 @@ class ScreenBrightnessDisplayManagerRepositoryTest : SysuiTestCase() {
+             }
+         }
+ 
 +    @Test
 +    fun rapidModeToggles_readModeWhenTheirQueueEntryRuns() =
 +        with(kosmos) {
