@@ -19,6 +19,12 @@ app_domain(gamespace_app)
 # radio, telephony.registry, sensor_privacy, vibrator_manager, deviceidle).
 # color_display is load-bearing: its lookup throws, and a crash-looping
 # uid-system service triggers RescueParty and reboots the phone.
+# media_session is load-bearing the other way: PhoneWindow dispatches every
+# volume key through MediaSessionManager, whose lookup uses getService (no
+# throw) - a denial caches a null binder and the first volume press NPEs the
+# settings activity, silently (user builds audit nothing). system_app carries
+# this via its near-blanket service_manager_type find (minus native-daemon
+# exclusions); the dedicated domain must carry it explicitly.
 allow gamespace_app servicemanager:service_manager list;
 allow gamespace_app {
   activity_service
@@ -34,6 +40,7 @@ allow gamespace_app {
   game_service
   gpu_service
   hint_service
+  media_session_service
   netpolicy_service
   netstats_service
   nfc_service
