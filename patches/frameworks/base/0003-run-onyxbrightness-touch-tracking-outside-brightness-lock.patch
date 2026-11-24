@@ -1,0 +1,67 @@
+From 300d4c39469a9211a2279a40fdc2e35630aa9f4a Mon Sep 17 00:00:00 2001
+From: Myghi63 <myghi63@gmail.com>
+Date: Tue, 24 Nov 2026 19:25:25 -0300
+Subject: [PATCH] Display: Run OnyxBrightness touch tracking outside the
+ brightness lock
+
+setEnabled() runs under DisplayBrightnessController's lock. monitorGestureInput
+and InputMonitor.dispose are binder IPCs that re-enter InputManagerService and
+WindowManager (createSurfaceForGestureMonitor takes WindowManagerGlobalLock),
+while WM waits on DisplayManagerService and DisplayManagerService.getBrightness
+waits back on the brightness controller lock. The inversion deadlocks
+system_server (watchdog cycle seen on device: DBC -> WM -> DMS -> DBC, screen
+off + volume key reconfiguring auto brightness). Post start/release to the
+controller handler so the IPC runs off the lock-held stack.
+
+Change-Id: Ia863f4c79f70e6e9dfaea7be64cefbcb3a71f488
+---
+ .../display/OnyxBrightnessSensorPolicy.java   | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/services/core/java/com/android/server/display/OnyxBrightnessSensorPolicy.java b/services/core/java/com/android/server/display/OnyxBrightnessSensorPolicy.java
+index f6e1f4b729a9..156d8d52e84c 100644
+--- a/services/core/java/com/android/server/display/OnyxBrightnessSensorPolicy.java
++++ b/services/core/java/com/android/server/display/OnyxBrightnessSensorPolicy.java
+@@ -163,7 +163,11 @@ final class OnyxBrightnessSensorPolicy {
+                 mPocketRegistered = mSensorManager.registerListener(mPocketListener, mPocketSensor,
+                         SensorManager.SENSOR_DELAY_NORMAL, mHandler);
+             }
+-            startTouchTracking();
++            // monitorGestureInput re-enters InputManagerService and WindowManager over binder.
++            // Never call it from here: setEnabled runs under DisplayBrightnessController's lock,
++            // and WM waits on DisplayManagerService which waits back on this same lock - posting
++            // the tracking start keeps it off the lock-held stack (watchdog cycle, 24/11).
++            mHandler.post(() -> { if (mEnabled) startTouchTracking(); });
+         } else {
+             mMainSampleTime.clear();
+             mAssistSampleTime.clear();
+@@ -172,10 +176,8 @@ final class OnyxBrightnessSensorPolicy {
+             if (mPocketRegistered) mSensorManager.unregisterListener(mPocketListener);
+             mAssistRegistered = false;
+             mPocketRegistered = false;
+-            if (mInputReceiver != null) mInputReceiver.dispose();
+-            if (mInputMonitor != null) mInputMonitor.dispose();
+-            mInputReceiver = null;
+-            mInputMonitor = null;
++            // InputMonitor.dispose is binder IPC too; same reason as above.
++            mHandler.post(this::releaseTouchTracking);
+         }
+     }
+ 
+@@ -339,6 +341,13 @@ final class OnyxBrightnessSensorPolicy {
+         }
+     }
+ 
++    private void releaseTouchTracking() {
++        if (mInputReceiver != null) mInputReceiver.dispose();
++        if (mInputMonitor != null) mInputMonitor.dispose();
++        mInputReceiver = null;
++        mInputMonitor = null;
++    }
++
+     private void onTouch(MotionEvent event) {
+         updateTouchRect();
+         boolean touching = false;
+-- 
+2.56.0
+
