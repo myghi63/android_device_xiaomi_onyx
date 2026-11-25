@@ -391,7 +391,7 @@
             "Path": "/sys/devices/system/cpu/cpu2/core_ctl/min_cpus",
             "Values": [
                 "1",
-                "2"
+                "0"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -650,7 +650,7 @@
         {
             "PowerHint": "DISPLAY_INACTIVE",
             "Node": "sysDevicesSystemCpuCpu2CoreCtlMinCpus",
-            "Value": "2",
+            "Value": "0",
             "Duration": 0
         },
         {
