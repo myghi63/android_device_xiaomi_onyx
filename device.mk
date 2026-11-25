@@ -19,7 +19,8 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 # whenever it gets recompiled on the device.
 PRODUCT_SYSTEM_SERVER_COMPILER_FILTER := speed
 PRODUCT_PRODUCT_PROPERTIES += \
-    dalvik.vm.systemservercompilerfilter=speed
+    dalvik.vm.systemservercompilerfilter=speed \
+    pm.dexopt.install-fast=speed-profile
 
 # pKVM
 $(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk)
