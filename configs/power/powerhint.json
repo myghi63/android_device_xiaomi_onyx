@@ -152,7 +152,7 @@
             "Path": "/sys/devices/system/cpu/cpufreq/policy2/walt/adaptive_low_freq",
             "Values": [
                 "0",
-                "940800",
+                "1516800",
                 "1286400"
             ],
             "DefaultIndex": 0,
@@ -174,7 +174,7 @@
             "Values": [
                 "0",
                 "1056000",
-                "1516800"
+                "940800"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -590,13 +590,13 @@
         {
             "PowerHint": "INTERACTION",
             "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLowFreq",
-            "Value": "940800",
+            "Value": "1516800",
             "Duration": 2000
         },
         {
             "PowerHint": "INTERACTION",
             "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLevel1",
-            "Value": "1516800",
+            "Value": "940800",
             "Duration": 2000
         },
         {
@@ -920,13 +920,13 @@
         {
             "PowerHint": "GAME_LOADING",
             "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLowFreq",
-            "Value": "940800",
+            "Value": "1516800",
             "Duration": 4000
         },
         {
             "PowerHint": "GAME_LOADING",
             "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLevel1",
-            "Value": "1516800",
+            "Value": "940800",
             "Duration": 4000
         },
         {
