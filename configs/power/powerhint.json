@@ -51,6 +51,16 @@
             "ResetOnInit": true
         },
         {
+            "Name": "procSysWaltSchedHeavyNr",
+            "Path": "/proc/sys/walt/sched_heavy_nr",
+            "Values": [
+                "0",
+                "2"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
             "Name": "sysDevicesSystemCpuCpu0CoreCtlMinCpus",
             "Path": "/sys/devices/system/cpu/cpu0/core_ctl/min_cpus",
             "Values": [
@@ -549,8 +559,8 @@
         },
         {
             "PowerHint": "INTERACTION",
-            "Node": "procSysWaltSchedBoost",
-            "Value": "1",
+            "Node": "procSysWaltSchedHeavyNr",
+            "Value": "2",
             "Duration": 0
         },
         {
