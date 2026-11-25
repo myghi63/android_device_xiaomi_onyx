@@ -606,12 +606,6 @@
             "Duration": 2000
         },
         {
-            "PowerHint": "INTERACTION",
-            "Node": "sysDevicesClassKgslKgsl3d0DevfreqMinFreq",
-            "Value": "644000000",
-            "Duration": 2000
-        },
-        {
             "PowerHint": "INTERACTIVE",
             "Node": "sysDevicesSystemCpuCpu0CpufreqScalingMinFreq",
             "Value": "748800",
