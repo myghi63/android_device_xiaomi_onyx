@@ -1,3 +1,14 @@
 allow hal_power_default proc_walt:dir search;
 allow hal_power_default proc_walt:file rw_file_perms;
 allow hal_power_default vendor_sysfs_msm_perf:file rw_file_perms;
+
+# ADPF sets uclamp on hint-session threads (same rules as Pixel)
+typeattribute hal_power_default mlstrustedsubject;
+allow hal_power_default self:capability sys_nice;
+allow hal_power_default appdomain:process { getsched setsched };
+allow hal_power_default surfaceflinger:process setsched;
+allow hal_power_default system_server:process setsched;
+allow hal_power_default hal_graphics_composer_default:process setsched;
+
+# cpu_dma_latency
+allow hal_power_default vendor_latency_device:chr_file rw_file_perms;
