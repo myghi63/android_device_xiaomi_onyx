@@ -479,7 +479,7 @@
             "Path": "/sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq",
             "Values": [
                 "480000",
-                "940800",
+                "787200",
                 "1401600"
             ],
             "DefaultIndex": 0,
@@ -490,7 +490,6 @@
             "Path": "/sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq",
             "Values": [
                 "480000",
-                "940800",
                 "1363200",
                 "3206400"
             ],
@@ -620,13 +619,13 @@
         {
             "PowerHint": "INTERACTIVE",
             "Node": "sysDevicesSystemCpuCpu5CpufreqScalingMinFreq",
-            "Value": "940800",
+            "Value": "787200",
             "Duration": 0
         },
         {
             "PowerHint": "INTERACTIVE",
             "Node": "sysDevicesSystemCpuCpu7CpufreqScalingMinFreq",
-            "Value": "940800",
+            "Value": "480000",
             "Duration": 0
         },
         {
