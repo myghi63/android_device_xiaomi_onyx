@@ -540,24 +540,6 @@
     "Actions": [
         {
             "PowerHint": "INTERACTION",
-            "Node": "sysDevicesSystemCpuCpufreqPolicy0WaltAdaptiveHighFreq",
-            "Value": "1632000",
-            "Duration": 0
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "sysDevicesSystemCpuCpufreqPolicy0WaltAdaptiveLowFreq",
-            "Value": "1401600",
-            "Duration": 0
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "sysDevicesSystemCpuCpufreqPolicy0WaltAdaptiveLevel1",
-            "Value": "1190400",
-            "Duration": 0
-        },
-        {
-            "PowerHint": "INTERACTION",
             "Node": "procSysWaltSchedHeavyNr",
             "Value": "2",
             "Duration": 0
@@ -587,27 +569,9 @@
             "Duration": 2000
         },
         {
-            "PowerHint": "INTERACTION",
-            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLowFreq",
-            "Value": "1516800",
-            "Duration": 2000
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveLevel1",
-            "Value": "940800",
-            "Duration": 2000
-        },
-        {
-            "PowerHint": "INTERACTION",
-            "Node": "sysDevicesSystemCpuCpufreqPolicy2WaltAdaptiveHighFreq",
-            "Value": "2208000",
-            "Duration": 2000
-        },
-        {
             "PowerHint": "INTERACTIVE",
             "Node": "sysDevicesSystemCpuCpu0CpufreqScalingMinFreq",
-            "Value": "748800",
+            "Value": "441600",
             "Duration": 0
         },
         {
