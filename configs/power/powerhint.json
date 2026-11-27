@@ -34,8 +34,7 @@
             "Name": "sysDevicesClassKgslKgsl3d0DevfreqMinFreq",
             "Path": "/sys/class/kgsl/kgsl-3d0/devfreq/min_freq",
             "Values": [
-                "264000000",
-                "644000000"
+                "264000000"
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
@@ -914,12 +913,6 @@
             "PowerHint": "GAME_LOADING",
             "Node": "sysDevicesSystemCpuCpufreqPolicy5WaltAdaptiveHighFreq",
             "Value": "1728000",
-            "Duration": 4000
-        },
-        {
-            "PowerHint": "GAME_LOADING",
-            "Node": "sysDevicesClassKgslKgsl3d0DevfreqMinFreq",
-            "Value": "644000000",
             "Duration": 4000
         }
     ],
