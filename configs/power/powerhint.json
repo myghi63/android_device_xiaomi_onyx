@@ -534,6 +534,46 @@
             ],
             "DefaultIndex": 0,
             "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpufreqPolicy0ScalingMaxFreq",
+            "Path": "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq",
+            "Values": [
+                "2016000",
+                "1401600"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpufreqPolicy2ScalingMaxFreq",
+            "Path": "/sys/devices/system/cpu/cpufreq/policy2/scaling_max_freq",
+            "Values": [
+                "3014400",
+                "1516800"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpufreqPolicy5ScalingMaxFreq",
+            "Path": "/sys/devices/system/cpu/cpufreq/policy5/scaling_max_freq",
+            "Values": [
+                "2803200",
+                "1516800"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "sysDevicesSystemCpuCpufreqPolicy7ScalingMaxFreq",
+            "Path": "/sys/devices/system/cpu/cpufreq/policy7/scaling_max_freq",
+            "Values": [
+                "3168000",
+                "2400000"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
         }
     ],
     "Actions": [
@@ -914,6 +954,30 @@
             "Node": "sysDevicesSystemCpuCpufreqPolicy5WaltAdaptiveHighFreq",
             "Value": "1728000",
             "Duration": 4000
+        },
+        {
+            "PowerHint": "LOW_POWER",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy0ScalingMaxFreq",
+            "Value": "1401600",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "LOW_POWER",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy2ScalingMaxFreq",
+            "Value": "1516800",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "LOW_POWER",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy5ScalingMaxFreq",
+            "Value": "1516800",
+            "Duration": 0
+        },
+        {
+            "PowerHint": "LOW_POWER",
+            "Node": "sysDevicesSystemCpuCpufreqPolicy7ScalingMaxFreq",
+            "Value": "2400000",
+            "Duration": 0
         }
     ],
     "AdpfConfig": [
